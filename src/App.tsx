@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   ShieldCheck, 
   Sparkles, 
-  Video, 
   Zap, 
   Download, 
   CheckCircle2, 
@@ -141,16 +140,11 @@ export default function App() {
       {/* ── TOP NAV BAR ── */}
       <nav className="fixed top-0 inset-x-0 z-50 h-16 border-b border-white/5 bg-[#08090d]/85 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 glow-amber-sm">
-              <Video className="w-5 h-5" />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-display text-lg font-bold tracking-tight text-white">ClipVault</span>
-              <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-400 border border-amber-400/20">
-                Studio AI
-              </span>
-            </div>
+          <div className="flex items-center gap-2.5">
+            <span className="font-display text-xl sm:text-2xl font-black tracking-tight text-white">ClipVault</span>
+            <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2.5 py-0.5 rounded-md bg-amber-400/10 text-amber-400 border border-amber-400/25">
+              STUDIO AI
+            </span>
           </div>
 
           <div className="hidden lg:flex items-center gap-7 text-xs font-semibold text-zinc-400">
@@ -1016,39 +1010,50 @@ export default function App() {
             {[
               {
                 q: "Do I need an expensive high-end GPU to run ClipVault?",
-                a: "No! While ClipVault leverages NVIDIA NVENC, AMD AMF, and Intel QuickSync GPUs for super-fast renders (~20-30s), it also has a 100% CPU software fallback (libx264) that works on any standard Windows 10/11 laptop."
+                a: "No. While ClipVault leverages NVIDIA NVENC, AMD AMF, and Intel QuickSync graphics cards for blazing-fast 20–30 second exports, it also includes a native multi-core CPU software engine (libx264) that runs smoothly on any standard Windows 10 or 11 desktop and laptop."
               },
               {
                 q: "How does Bring-Your-Own-Key (BYOK) work?",
-                a: "You can plug in your own free or pay-as-you-go API key from Google Gemini, Groq, or OpenAI. Google gives thousands of free requests per day, meaning you pay $0 for AI virality scoring and Ask Studio queries!"
+                a: "You connect your own API key directly from Google Gemini, Groq, or OpenAI. Google Gemini provides thousands of free daily requests, meaning you can analyze transcripts, score viral clips, and chat with Ask Studio without paying recurring AI subscription markups."
               },
               {
                 q: "How does the license key activation work?",
-                a: "Upon purchasing from Lemon Squeezy, you will instantly receive your unique License Key via email and screen. Enter it once inside ClipVault Desktop, and our encrypted Windows DPAPI engine activates your PC. It works 100% offline afterward."
+                a: "Immediately upon checkout through Lemon Squeezy, you receive your unique License Key on screen and via email. Paste it once into the desktop app, and our Windows DPAPI engine binds and encrypts the key to your machine. It operates 100% offline with zero cloud phone-homes."
               },
               {
                 q: "Are the rendered clips safe to monetize on YouTube, TikTok, and Reels?",
-                a: "Yes! ClipVault is designed for transformative commentary and podcast highlighting under Section 107 of the U.S. Copyright Act (Fair Use Doctrine). You retain 100% intellectual property and commercial monetization rights."
+                a: "Yes. ClipVault is engineered specifically for transformative short-form commentary, podcast highlights, and educational clips under Section 107 of the U.S. Copyright Act (Fair Use Doctrine). You retain 100% commercial ownership and full monetization rights."
               },
               {
                 q: "What is your refund policy?",
-                a: "We offer a 14-day money-back guarantee. If ClipVault doesn't work on your computer or meet your expectations, send an email to support@clipvault.app for a prompt refund."
+                a: "We back every license with an unconditional 14-day money-back guarantee. If ClipVault does not perform properly on your machine or fit your editing workflow, email support@clipvault.app for an immediate full refund."
               },
               {
                 q: "Is ClipVault available for Mac or Linux?",
-                a: "The initial launch is dedicated to Windows 10 & 11 (64-bit). Mac and Linux builds are on our immediate roadmap!"
+                a: "The current production release is dedicated to Windows 10 & 11 (64-bit) for maximum direct GPU hardware acceleration. Dedicated Apple Silicon (macOS) and Linux editions are actively in progress on our roadmap."
               }
             ].map((item, idx) => (
-              <div key={idx} className="glass-card rounded-xl border border-white/5 overflow-hidden">
+              <div
+                key={idx}
+                className={`glass-card rounded-2xl border transition-all duration-200 overflow-hidden ${
+                  activeFaq === idx
+                    ? 'border-amber-400/40 bg-amber-400/[0.02] shadow-[0_0_20px_rgba(250,204,21,0.06)]'
+                    : 'border-white/10 hover:border-white/20'
+                }`}
+              >
                 <button
                   onClick={() => toggleFaq(idx)}
-                  className="w-full p-4 text-left flex items-center justify-between text-xs sm:text-sm font-bold text-white hover:text-amber-400 transition-colors"
+                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between text-base sm:text-lg font-bold text-white hover:text-amber-300 transition-colors gap-4 cursor-pointer"
                 >
-                  <span>{item.q}</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeFaq === idx ? 'rotate-180 text-amber-400' : 'text-zinc-500'}`} />
+                  <span className="leading-snug">{item.q}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 shrink-0 transition-transform duration-200 ${
+                      activeFaq === idx ? 'rotate-180 text-amber-400' : 'text-zinc-500'
+                    }`}
+                  />
                 </button>
                 {activeFaq === idx && (
-                  <div className="p-4 pt-0 text-xs sm:text-sm text-zinc-400 leading-relaxed border-t border-white/5">
+                  <div className="px-5 sm:px-6 pb-6 pt-2 text-sm sm:text-base text-zinc-100 font-normal leading-relaxed border-t border-white/5 bg-white/[0.015]">
                     {item.a}
                   </div>
                 )}
@@ -1061,11 +1066,11 @@ export default function App() {
       {/* ── FOOTER ── */}
       <footer className="py-12 px-4 sm:px-6 border-t border-white/10 bg-[#08090d] text-zinc-500 text-xs">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
-              <Video className="w-4 h-4" />
-            </div>
-            <span className="font-display font-bold text-white text-sm">ClipVault AI Video Studio</span>
+          <div className="flex items-center gap-2.5">
+            <span className="font-display font-black text-white text-base tracking-tight">ClipVault</span>
+            <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded-md bg-amber-400/10 text-amber-400 border border-amber-400/25">
+              STUDIO AI
+            </span>
           </div>
 
           <div className="flex items-center gap-6 text-zinc-400 text-xs">
