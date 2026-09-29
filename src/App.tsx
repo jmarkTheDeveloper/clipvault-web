@@ -171,9 +171,7 @@ export default function App() {
               Lifetime Pass
             </a>
             <a
-              href="https://github.com/jmarkTheDeveloper/ClipVault-Desktop-AI-Clipping-/releases"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#pricing"
               className="text-xs font-bold px-4 py-2 rounded-lg bg-amber-400 text-black hover:bg-amber-300 transition-all flex items-center gap-1.5 shadow-[0_0_20px_rgba(250,204,21,0.3)] hover:scale-105 active:scale-95"
             >
               <Download className="w-3.5 h-3.5" />
@@ -212,9 +210,7 @@ export default function App() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
             <a
               id="download-hero"
-              href="https://github.com/jmarkTheDeveloper/ClipVault-Desktop-AI-Clipping-/releases"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#pricing"
               className="w-full sm:w-auto px-8 py-4 rounded-xl bg-amber-400 text-black font-extrabold text-sm flex items-center justify-center gap-2.5 hover:bg-amber-300 transition-all glow-amber hover:scale-105 active:scale-95"
             >
               <Download className="w-4 h-4" />
@@ -864,9 +860,7 @@ export default function App() {
 
               <div className="pt-8">
                 <a
-                  href="https://github.com/jmarkTheDeveloper/ClipVault-Desktop-AI-Clipping-/releases"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#pricing"
                   className="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/10 transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
@@ -979,31 +973,31 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── SOLO CREATOR STORY / BUILD IN PUBLIC ── */}
+      {/* ── CLIPVAULT STUDIO MISSION ── */}
       <section className="py-16 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto glass-card p-8 rounded-2xl border border-white/10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 text-xs font-semibold mb-4 border border-pink-500/20">
-            <Heart className="w-3.5 h-3.5" />
-            <span>The Solo Developer Story</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 text-amber-400 text-xs font-semibold mb-4 border border-amber-400/20">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>The ClipVault Studio Mission</span>
           </div>
           <h3 className="font-display text-2xl font-extrabold text-white mb-3">
-            Built by a CS Student Developer for Indie Creators
+            High-Performance AI Video Clipping Without Subscriptions
           </h3>
           <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-xl mx-auto mb-6">
-            Hi, I’m <strong>@jmarkTheDeveloper</strong>. I built ClipVault because I got tired of cloud SaaS tools charging $30/month just to clip a few podcast highlights while limiting video quality to 1080p. ClipVault puts the AI power back onto your own computer GPU.
+            We built ClipVault because creators shouldn't have to pay $30 to $50 every month just to process short-form video on their own hardware. By combining state-of-the-art MediaPipe computer vision, whisper neural models, and direct FFmpeg GPU encoders, ClipVault delivers 4K vertical exports with 100% data sovereignty, zero cloud waitlists, and zero recurring fees.
           </p>
           <div className="flex items-center justify-center gap-4 text-xs font-mono text-zinc-400">
-            <a href="mailto:jmarkthedeveloper@gmail.com" className="hover:text-white transition-colors">
-              jmarkthedeveloper@gmail.com
+            <a href="mailto:support@clipvault.app" className="hover:text-amber-400 transition-colors">
+              support@clipvault.app
             </a>
             <span>•</span>
             <a 
-              href="https://github.com/jmarkTheDeveloper/ClipVault-Desktop-AI-Clipping-"
+              href={LEMON_CHECKOUT_URL}
               target="_blank" 
               rel="noopener noreferrer"
               className="text-amber-400 hover:underline flex items-center gap-1"
             >
-              <span>GitHub Repository</span>
+              <span>Official Store</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
@@ -1038,7 +1032,7 @@ export default function App() {
               },
               {
                 q: "What is your refund policy?",
-                a: "We offer a 14-day money-back guarantee. If ClipVault doesn't work on your computer or meet your expectations, send an email to jmarkthedeveloper@gmail.com for a prompt refund."
+                a: "We offer a 14-day money-back guarantee. If ClipVault doesn't work on your computer or meet your expectations, send an email to support@clipvault.app for a prompt refund."
               },
               {
                 q: "Is ClipVault available for Mac or Linux?",
@@ -1075,22 +1069,22 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-6 text-zinc-400 text-xs">
-            <a href="https://github.com/jmarkTheDeveloper/ClipVault-Desktop-AI-Clipping-" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            <a href="#pricing" className="hover:text-white transition-colors">
               EULA v2.4
             </a>
-            <a href="https://github.com/jmarkTheDeveloper/ClipVault-Desktop-AI-Clipping-" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            <a href="#pricing" className="hover:text-white transition-colors">
               Privacy Policy
             </a>
-            <a href="https://github.com/jmarkTheDeveloper/ClipVault-Desktop-AI-Clipping-" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            <a href="#pricing" className="hover:text-white transition-colors">
               DMCA Fair Use
             </a>
-            <a href="mailto:jmarkthedeveloper@gmail.com" className="hover:text-white transition-colors">
+            <a href="mailto:support@clipvault.app" className="hover:text-white transition-colors">
               Support
             </a>
           </div>
 
           <div className="text-center md:text-right text-[11px]">
-            <div>© 2026 ClipVault AI. Published by @jmarkTheDeveloper.</div>
+            <div>© 2026 ClipVault AI Studio. All rights reserved.</div>
             <div className="text-zinc-600 mt-0.5">All trademarks belong to their respective owners.</div>
           </div>
         </div>
