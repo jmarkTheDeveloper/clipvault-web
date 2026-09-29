@@ -978,13 +978,13 @@ export default function App() {
         <div className="max-w-3xl mx-auto glass-card p-8 rounded-2xl border border-white/10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 text-amber-400 text-xs font-semibold mb-4 border border-amber-400/20">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>The ClipVault Studio Mission</span>
+            <span>The ClipVault Studio Philosophy</span>
           </div>
           <h3 className="font-display text-2xl font-extrabold text-white mb-3">
-            High-Performance AI Video Clipping Without Subscriptions
+            Total Creative Freedom Meets Autonomous AI Editing
           </h3>
           <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-xl mx-auto mb-6">
-            We built ClipVault because creators shouldn't have to pay $30 to $50 every month just to process short-form video on their own hardware. By combining state-of-the-art MediaPipe computer vision, whisper neural models, and direct FFmpeg GPU encoders, ClipVault delivers 4K vertical exports with 100% data sovereignty, zero cloud waitlists, and zero recurring fees.
+            Most clipping tools treat creators like passive spectators: you paste a link, wait in a server queue, and get a rigid, uneditable output. We engineered ClipVault as a full desktop studio editor—empowering you with complete freedom to direct the AI. Fine-tune your framing, adjust active speaker steadicam parameters, customize animated karaoke styles, consult Ask Studio for viral angles, and export uncompressed 4K master files directly on your own workstation.
           </p>
           <div className="flex items-center justify-center gap-4 text-xs font-mono text-zinc-400">
             <a href="mailto:support@clipvault.app" className="hover:text-amber-400 transition-colors">
