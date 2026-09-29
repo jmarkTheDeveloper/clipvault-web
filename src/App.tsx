@@ -140,12 +140,9 @@ export default function App() {
       {/* ── TOP NAV BAR ── */}
       <nav className="fixed top-0 inset-x-0 z-50 h-16 border-b border-white/5 bg-[#08090d]/85 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="font-display text-xl sm:text-2xl font-black tracking-tight text-white">ClipVault</span>
-            <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2.5 py-0.5 rounded-md bg-amber-400/10 text-amber-400 border border-amber-400/25">
-              STUDIO AI
-            </span>
-          </div>
+          <a href="#" className="font-display text-xl sm:text-2xl font-black tracking-tight text-white hover:text-amber-400 transition-colors">
+            ClipVault
+          </a>
 
           <div className="hidden lg:flex items-center gap-7 text-xs font-semibold text-zinc-400">
             <a href="#demo" className="hover:text-amber-400 transition-colors">Interactive Studio</a>
@@ -1066,11 +1063,8 @@ export default function App() {
       {/* ── FOOTER ── */}
       <footer className="py-12 px-4 sm:px-6 border-t border-white/10 bg-[#08090d] text-zinc-500 text-xs">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
-            <span className="font-display font-black text-white text-base tracking-tight">ClipVault</span>
-            <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded-md bg-amber-400/10 text-amber-400 border border-amber-400/25">
-              STUDIO AI
-            </span>
+          <div className="font-display font-black text-white text-base tracking-tight">
+            ClipVault
           </div>
 
           <div className="flex items-center gap-6 text-zinc-400 text-xs">
