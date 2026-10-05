@@ -657,8 +657,9 @@ export default function App() {
       {/* ── TOP NAV BAR ── */}
       <nav className="fixed top-0 inset-x-0 z-50 h-16 border-b border-white/5 bg-[#08090d]/85 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
-          <a href="#" className="font-display text-xl sm:text-2xl font-black tracking-tight text-white hover:text-emerald-400 transition-colors">
-            ClipVault
+          <a href="#" className="flex items-center gap-2.5 font-display text-xl sm:text-2xl font-black tracking-tight text-white hover:text-emerald-400 transition-colors group">
+            <img src="/logo.png" alt="ClipVault" className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg shadow-sm" />
+            <span>ClipVault</span>
           </a>
 
           <div className="hidden lg:flex items-center gap-7 text-xs font-semibold text-zinc-400">
@@ -2141,8 +2142,9 @@ export default function App() {
       {/* ── FOOTER ── */}
       <footer className="py-12 px-4 sm:px-6 border-t border-white/10 bg-[#08090d] text-zinc-500 text-xs">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="font-display font-black text-white text-base tracking-tight">
-            ClipVault
+          <div className="flex items-center gap-2.5 font-display font-black text-white text-base tracking-tight">
+            <img src="/logo.png" alt="ClipVault" className="w-6 h-6 rounded-md shadow-sm" />
+            <span>ClipVault</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-6 text-zinc-400 text-xs">
