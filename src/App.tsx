@@ -416,7 +416,7 @@ function SearchableCombobox({
               ref={inputRef}
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value.slice(0, 50).replace(/[<>'"`]/g, ""))}
               placeholder={searchPlaceholder}
               className="text-xs text-white placeholder-zinc-500 bg-transparent outline-none w-full font-medium"
             />
@@ -595,11 +595,13 @@ export default function App() {
   }, [isPlayingPreview]);
 
   const handleAskPrompt = (question: string, reply: string) => {
-    setChatPrompt(question);
+    const cleanQuestion = question.slice(0, 300).replace(/[<>'"`]/g, "");
+    const cleanReply = reply.slice(0, 1500).replace(/[<>]/g, "");
+    setChatPrompt(cleanQuestion);
     setIsTypingChat(true);
     setChatResponse('');
     setTimeout(() => {
-      setChatResponse(reply);
+      setChatResponse(cleanReply);
       setIsTypingChat(false);
     }, 600);
   };
