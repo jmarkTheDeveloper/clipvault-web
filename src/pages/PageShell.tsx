@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Download, ExternalLink, ShieldCheck, Mail } from 'lucide-react';
+import { Download } from 'lucide-react';
 
 export type PageRoute = 'home' | 'about' | 'faq' | 'support' | 'setup' | 'terms' | 'privacy' | 'refunds' | 'eula';
 
@@ -8,7 +8,7 @@ interface PageShellProps {
   title: string;
   subtitle: string;
   lastUpdated?: string;
-  onNavigate: (route: PageRoute) => void;
+  onNavigate: (route: PageRoute, anchor?: string) => void;
   children: React.ReactNode;
 }
 
@@ -22,49 +22,79 @@ export const PageShell: React.FC<PageShellProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-[#08090d] text-zinc-100 selection:bg-emerald-400 selection:text-black flex flex-col justify-between">
-      {/* ── TOP NAV BAR ── */}
-      <nav className="fixed top-0 inset-x-0 z-50 h-16 border-b border-white/5 bg-[#08090d]/90 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+      {/* ── TOP NAV BAR (STANDALONE PRODUCTION HEADER) ── */}
+      <nav className="fixed top-0 inset-x-0 z-50 h-16 border-b border-white/5 bg-[#08090d]/85 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => onNavigate('home')}
+            className="flex items-center gap-2.5 font-display text-xl sm:text-2xl font-black tracking-tight text-white hover:text-emerald-400 transition-colors group cursor-pointer"
+          >
+            <img src="/logo.png" alt="ClipVault" className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg shadow-sm group-hover:scale-105 transition-transform" />
+            <span>ClipVault</span>
+          </button>
+
+          <div className="hidden lg:flex items-center gap-7 text-xs font-semibold text-zinc-400">
             <button
               type="button"
-              onClick={() => onNavigate('home')}
-              className="flex items-center gap-2.5 font-display text-xl font-black tracking-tight text-white hover:text-emerald-400 transition-colors cursor-pointer group"
+              onClick={() => onNavigate('home', 'demo')}
+              className="hover:text-emerald-400 transition-colors cursor-pointer"
             >
-              <img src="/logo.png" alt="ClipVault" className="w-7 h-7 rounded-lg shadow-sm group-hover:scale-105 transition-transform" />
-              <span>ClipVault</span>
+              Interactive Studio
             </button>
-
-            <span className="hidden sm:inline-block w-px h-5 bg-white/10" />
-
             <button
               type="button"
-              onClick={() => onNavigate('home')}
-              className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-white transition-colors cursor-pointer px-2.5 py-1.5 rounded-lg hover:bg-white/5"
+              onClick={() => onNavigate('home', 'comparison')}
+              className="hover:text-emerald-400 transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Back to Home</span>
+              Why Local?
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('home', 'pricing')}
+              className="hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              Pricing
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('faq')}
+              className={`hover:text-emerald-400 transition-colors cursor-pointer ${title.includes('FAQ') ? 'text-emerald-400 font-bold' : ''}`}
+            >
+              FAQ
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('about')}
+              className={`hover:text-emerald-400 transition-colors cursor-pointer ${title.includes('About') ? 'text-emerald-400 font-bold' : ''}`}
+            >
+              About
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('support')}
+              className={`hover:text-emerald-400 transition-colors cursor-pointer ${title.includes('Support') ? 'text-emerald-400 font-bold' : ''}`}
+            >
+              Support
             </button>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => onNavigate('home')}
-              className="sm:hidden flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-white transition-colors cursor-pointer px-2.5 py-1.5 rounded-lg bg-white/5"
+              onClick={() => onNavigate('home', 'pricing')}
+              className="text-xs font-bold px-3.5 py-2 rounded-lg text-zinc-300 hover:text-white transition-colors hidden sm:block cursor-pointer"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Home</span>
+              Pro Plans
             </button>
-
             <a
               href="https://clipvault.lemonsqueezy.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black text-xs font-bold transition-all shadow-lg shadow-emerald-400/20 cursor-pointer"
+              className="text-xs font-bold px-4 py-2 rounded-lg bg-emerald-400 text-black hover:bg-emerald-300 transition-all flex items-center gap-1.5 shadow-[0_0_20px_rgba(0,255,102,0.3)] hover:scale-105 active:scale-95 cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>Get ClipVault</span>
+              <Download className="w-3.5 h-3.5" />
+              <span>Download Free (.exe)</span>
             </a>
           </div>
         </div>
@@ -73,23 +103,14 @@ export const PageShell: React.FC<PageShellProps> = ({
       {/* ── MAIN CONTENT CONTAINER ── */}
       <main className="pt-28 pb-20 px-4 sm:px-6 flex-1">
         <div className="max-w-4xl mx-auto">
-          {/* Breadcrumb Header */}
-          <div className="mb-10 pb-8 border-b border-white/10">
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-3">
-              <button
-                type="button"
-                onClick={() => onNavigate('home')}
-                className="hover:text-emerald-400 transition-colors cursor-pointer"
-              >
-                Home
-              </button>
-              <span>/</span>
-              <span className="text-zinc-500">{category}</span>
-              <span>/</span>
-              <span className="text-emerald-400 font-medium">{title}</span>
+          {/* Dedicated Page Header */}
+          <div className="mb-12 pb-8 border-b border-white/10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-emerald-400/20 text-xs font-medium text-emerald-400 mb-4 backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>{category}</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
               {title}
             </h1>
             <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-2xl">
@@ -98,7 +119,7 @@ export const PageShell: React.FC<PageShellProps> = ({
 
             {lastUpdated && (
               <div className="mt-4 flex items-center gap-2 text-xs font-mono text-zinc-500">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
                 <span>Last Updated: {lastUpdated}</span>
               </div>
             )}
@@ -147,7 +168,7 @@ export const PageShell: React.FC<PageShellProps> = ({
                 <li>
                   <button 
                     type="button"
-                    onClick={() => onNavigate('home')} 
+                    onClick={() => onNavigate('home', 'features')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     1-Click Auto Clipper
@@ -156,7 +177,7 @@ export const PageShell: React.FC<PageShellProps> = ({
                 <li>
                   <button 
                     type="button"
-                    onClick={() => onNavigate('home')} 
+                    onClick={() => onNavigate('home', 'interactive-suite')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Timeline Editor &amp; Trimmer
@@ -165,7 +186,7 @@ export const PageShell: React.FC<PageShellProps> = ({
                 <li>
                   <button 
                     type="button"
-                    onClick={() => onNavigate('home')} 
+                    onClick={() => onNavigate('home', 'advantage')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Core Capabilities
@@ -174,7 +195,7 @@ export const PageShell: React.FC<PageShellProps> = ({
                 <li>
                   <button 
                     type="button"
-                    onClick={() => onNavigate('home')} 
+                    onClick={() => onNavigate('home', 'pricing')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Creator Pro &amp; Max Plans
@@ -199,7 +220,7 @@ export const PageShell: React.FC<PageShellProps> = ({
                 <li>
                   <button 
                     type="button"
-                    onClick={() => onNavigate('home')} 
+                    onClick={() => onNavigate('home', 'demo')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Interactive Demo

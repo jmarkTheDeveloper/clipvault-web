@@ -562,38 +562,80 @@ export default function App() {
   );
   const [isTypingChat, setIsTypingChat] = useState<boolean>(false);
 
-  // Full Dedicated Page Routing State (Synced with URL hash for browser history & bookmarks)
-  const [currentPage, setCurrentPage] = useState<PageRoute>(() => {
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (['about', 'faq', 'support', 'setup', 'terms', 'privacy', 'refunds', 'eula'].includes(hash)) {
-        return hash as PageRoute;
-      }
+  // Full Dedicated Page Routing State (Real browser pathnames with history & fallback)
+  const VALID_ROUTES: PageRoute[] = ['about', 'faq', 'support', 'setup', 'terms', 'privacy', 'refunds', 'eula'];
+
+  const getInitialRoute = (): PageRoute => {
+    if (typeof window === 'undefined') return 'home';
+
+    // 1. Check clean pathname first: /about, /faq, etc.
+    const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+    if (VALID_ROUTES.includes(path as PageRoute)) {
+      return path as PageRoute;
     }
+
+    // 2. Check hash fallback: #about, #/about
+    const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+    if (VALID_ROUTES.includes(hash as PageRoute)) {
+      try {
+        window.history.replaceState(null, '', `/${hash}`);
+      } catch {}
+      return hash as PageRoute;
+    }
+
     return 'home';
-  });
+  };
+
+  const [currentPage, setCurrentPage] = useState<PageRoute>(getInitialRoute);
 
   useEffect(() => {
-    const handleHash = () => {
-      const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (['about', 'faq', 'support', 'setup', 'terms', 'privacy', 'refunds', 'eula'].includes(hash)) {
-        setCurrentPage(hash as PageRoute);
-        window.scrollTo(0, 0);
+    const handlePopState = () => {
+      const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+      if (VALID_ROUTES.includes(path as PageRoute)) {
+        setCurrentPage(path as PageRoute);
       } else {
-        setCurrentPage('home');
+        const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+        if (VALID_ROUTES.includes(hash as PageRoute)) {
+          setCurrentPage(hash as PageRoute);
+        } else {
+          setCurrentPage('home');
+        }
       }
+      window.scrollTo(0, 0);
     };
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
   }, []);
 
-  const navigateTo = (route: PageRoute) => {
+  const navigateTo = (route: PageRoute, anchor?: string) => {
     if (route === 'home') {
-      window.location.hash = '';
+      const targetUrl = anchor ? `/#${anchor}` : '/';
+      try {
+        window.history.pushState(null, '', targetUrl);
+      } catch {
+        window.location.hash = anchor || '';
+      }
       setCurrentPage('home');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (anchor) {
+        setTimeout(() => {
+          const el = document.getElementById(anchor);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 80);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } else {
-      window.location.hash = route;
+      try {
+        window.history.pushState(null, '', `/${route}`);
+      } catch {
+        window.location.hash = route;
+      }
       setCurrentPage(route);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -702,19 +744,23 @@ export default function App() {
       {/* ── TOP NAV BAR ── */}
       <nav className="fixed top-0 inset-x-0 z-50 h-16 border-b border-white/5 bg-[#08090d]/85 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2.5 font-display text-xl sm:text-2xl font-black tracking-tight text-white hover:text-emerald-400 transition-colors group">
-            <img src="/logo.png" alt="ClipVault" className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg shadow-sm" />
+          <button 
+            type="button" 
+            onClick={() => navigateTo('home')} 
+            className="flex items-center gap-2.5 font-display text-xl sm:text-2xl font-black tracking-tight text-white hover:text-emerald-400 transition-colors group cursor-pointer"
+          >
+            <img src="/logo.png" alt="ClipVault" className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg shadow-sm group-hover:scale-105 transition-transform" />
             <span>ClipVault</span>
-          </a>
+          </button>
 
           <div className="hidden lg:flex items-center gap-7 text-xs font-semibold text-zinc-400">
             <a href="#demo" className="hover:text-emerald-400 transition-colors">Interactive Studio</a>
-            <a href="#ask-clipvault" className="hover:text-emerald-400 transition-colors">Ask ClipVault AI</a>
+            <a href="#advantage" className="hover:text-emerald-400 transition-colors">Why Local?</a>
             <a href="#workflow" className="hover:text-emerald-400 transition-colors">Workflow</a>
-            <a href="#comparison" className="hover:text-emerald-400 transition-colors">Why Local?</a>
-            <a href="#benchmarks" className="hover:text-emerald-400 transition-colors">GPU Benchmarks</a>
             <a href="#pricing" className="hover:text-emerald-400 transition-colors">Pricing</a>
-            <a href="#faq" className="hover:text-emerald-400 transition-colors">FAQ</a>
+            <button type="button" onClick={() => navigateTo('faq')} className="hover:text-emerald-400 transition-colors cursor-pointer">FAQ</button>
+            <button type="button" onClick={() => navigateTo('about')} className="hover:text-emerald-400 transition-colors cursor-pointer">About</button>
+            <button type="button" onClick={() => navigateTo('support')} className="hover:text-emerald-400 transition-colors cursor-pointer">Support</button>
           </div>
 
           <div className="flex items-center gap-3">
