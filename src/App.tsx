@@ -1964,7 +1964,7 @@ export default function App() {
                   </div>
                   <div className="flex items-center gap-2 text-zinc-500">
                     <X className="w-3.5 h-3.5 shrink-0" />
-                    <span>Pro Manual Studio (Pro Only)</span>
+                    <span>Pro Timeline Editor (Pro Only)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -2016,7 +2016,7 @@ export default function App() {
                   </div>
                   <div className="flex items-center gap-2 font-medium">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                    <span>Pro Manual Studio: 3 Clips / Week</span>
+                    <span>Pro Timeline Editor: 3 Clips / Week</span>
                   </div>
                   <div className="flex items-center gap-2 font-medium">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
