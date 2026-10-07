@@ -554,7 +554,7 @@ export default function App() {
   const [isTypingChat, setIsTypingChat] = useState<boolean>(false);
 
   // Legal & Support Modal State
-  const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | 'refunds' | 'eula' | 'support' | null>(null);
+  const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | 'refunds' | 'eula' | 'support' | 'about' | 'faq' | 'affiliate' | null>(null);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -1691,60 +1691,129 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── COMPARISON TABLE (CLIPVAULT VS CLOUD SAAS) ── */}
+      {/* ── THE CLIPVAULT ADVANTAGE (CORE CAPABILITIES & VALUES) ── */}
       <section id="comparison" className="py-20 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
+            <span className="text-xs uppercase font-bold tracking-widest text-emerald-400 mb-2 block">
+              Workstation Power • Built For High-Output Creators
+            </span>
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white mb-3">
-              Why Creators Are Quitting Cloud SaaS For ClipVault
+              The ClipVault Advantage
             </h2>
-            <p className="text-zinc-400 text-xs sm:text-sm max-w-xl mx-auto">
-              Cloud clipping platforms lock your workflow behind monthly credit caps and steep renewal fees.
+            <p className="text-zinc-400 text-xs sm:text-sm max-w-2xl mx-auto">
+              Everything you need to transform long YouTube videos and podcasts into high-retention vertical clips—running directly on your computer with maximum speed, privacy, and control.
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse glass-card rounded-2xl overflow-hidden">
-              <thead>
-                <tr className="border-b border-white/10 bg-white/[0.02]">
-                  <th className="p-4 sm:p-5 text-xs sm:text-sm font-bold text-zinc-300">Feature</th>
-                  <th className="p-4 sm:p-5 text-xs sm:text-sm font-bold text-red-400">Cloud SaaS (Opus/Munch)</th>
-                  <th className="p-4 sm:p-5 text-xs sm:text-sm font-bold text-emerald-400 bg-emerald-400/5">ClipVault Desktop AI</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5 text-xs sm:text-sm">
-                <tr>
-                  <td className="p-4 sm:p-5 font-medium text-white">Monthly Subscription</td>
-                  <td className="p-4 sm:p-5 text-zinc-400">$29 – $49 / month (recurring)</td>
-                  <td className="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-400/5">$0 / mo (Free) or $15 / mo (Pro)</td>
-                </tr>
-                <tr>
-                  <td className="p-4 sm:p-5 font-medium text-white">Monthly Minute Limits</td>
-                  <td className="p-4 sm:p-5 text-zinc-400">Capped at 60 – 150 minutes/mo</td>
-                  <td className="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-400/5">Unlimited Minutes</td>
-                </tr>
-                <tr>
-                  <td className="p-4 sm:p-5 font-medium text-white">Processing Queue</td>
-                  <td className="p-4 sm:p-5 text-zinc-400">5 – 15 minutes waiting in line</td>
-                  <td className="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-400/5">Instant Local GPU (20–30s)</td>
-                </tr>
-                <tr>
-                  <td className="p-4 sm:p-5 font-medium text-white">Maximum Resolution</td>
-                  <td className="p-4 sm:p-5 text-zinc-400">1080p Max (compressed)</td>
-                  <td className="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-400/5">Up to 4K UHD &amp; 8K Master</td>
-                </tr>
-                <tr>
-                  <td className="p-4 sm:p-5 font-medium text-white">Privacy &amp; Data Security</td>
-                  <td className="p-4 sm:p-5 text-zinc-400">Uploaded to third-party cloud servers</td>
-                  <td className="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-400/5">100% Local On-Device Sovereignty</td>
-                </tr>
-                <tr>
-                  <td className="p-4 sm:p-5 font-medium text-white">Content Rights</td>
-                  <td className="p-4 sm:p-5 text-zinc-400">Subject to third-party cloud ToS</td>
-                  <td className="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-400/5">100% Creator Ownership (0% Royalties)</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Pillar 1 */}
+            <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <Zap className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Instant Speed</div>
+                <h3 className="text-base font-bold text-white mb-2">Local GPU Acceleration</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Processes and renders video in 20–30 seconds directly on your GPU hardware. No cloud server queues, no waiting in line, and no upload bottlenecks.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-zinc-500">
+                <span>Rendering Time</span>
+                <span className="text-emerald-400 font-semibold">20–30s Instant</span>
+              </div>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <HardDrive className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">True Autonomy</div>
+                <h3 className="text-base font-bold text-white mb-2">Unlimited Processing Minutes</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Clip as many hours of video as your projects demand. ClipVault never meters your minutes, cuts off your workflow mid-project, or charges surprise overages.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-zinc-500">
+                <span>Monthly Minute Cap</span>
+                <span className="text-emerald-400 font-semibold">Unlimited (0 Caps)</span>
+              </div>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <Film className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Broadcast Grade</div>
+                <h3 className="text-base font-bold text-white mb-2">4K UHD &amp; High-Bitrate Export</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Export crisp, broadcast-quality vertical shorts in full native resolution. Your footage never undergoes lossy cloud downscaling or aggressive compression.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-zinc-500">
+                <span>Max Export Quality</span>
+                <span className="text-emerald-400 font-semibold">Up to 4K / 8K Master</span>
+              </div>
+            </div>
+
+            {/* Pillar 4 */}
+            <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <Lock className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Zero Cloud Ingestion</div>
+                <h3 className="text-base font-bold text-white mb-2">100% On-Device Privacy</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Your raw video footage, confidential client files, and personal transcripts never leave your computer. Everything stays securely on your local workstation.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-zinc-500">
+                <span>Data Storage</span>
+                <span className="text-emerald-400 font-semibold">100% On-Device Local</span>
+              </div>
+            </div>
+
+            {/* Pillar 5 */}
+            <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Creator Protection</div>
+                <h3 className="text-base font-bold text-white mb-2">100% Commercial Ownership</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  You own every frame and audio channel you export. Monetize freely across YouTube Shorts, TikTok, and Instagram Reels with 0% royalties or revenue share.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-zinc-500">
+                <span>Commercial Royalties</span>
+                <span className="text-emerald-400 font-semibold">0% (You Keep 100%)</span>
+              </div>
+            </div>
+
+            {/* Pillar 6 */}
+            <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <Cpu className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Multi-Model AI</div>
+                <h3 className="text-base font-bold text-white mb-2">Flexible Intelligence Engine</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Switch between built-in neural models, Gemini 2.5 Flash, Groq, and Whisper. Connect your own API keys for zero-cost virality scoring and animated captions.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-zinc-500">
+                <span>AI Architecture</span>
+                <span className="text-emerald-400 font-semibold">Local + BYOK Ready</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2139,55 +2208,152 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="py-12 px-4 sm:px-6 border-t border-white/10 bg-[#08090d] text-zinc-500 text-xs">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5 font-display font-black text-white text-base tracking-tight">
-            <img src="/logo.png" alt="ClipVault" className="w-6 h-6 rounded-md shadow-sm" />
-            <span>ClipVault</span>
+      {/* ── HIGH-CONVERTING 4-COLUMN FOOTER ── */}
+      <footer className="pt-16 pb-12 px-4 sm:px-6 border-t border-white/10 bg-[#06070a] text-zinc-400 text-xs">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            {/* Column 1: Company */}
+            <div>
+              <h4 className="font-bold text-white uppercase text-[11px] tracking-wider mb-4">Company</h4>
+              <ul className="space-y-2.5">
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('about')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    About ClipVault
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('support')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    Contact Support
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('affiliate')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left text-emerald-400 font-semibold"
+                  >
+                    Become an Affiliate (30%)
+                  </button>
+                </li>
+                <li>
+                  <span className="text-zinc-600">
+                    Careers <span className="text-[10px] bg-white/10 text-zinc-400 px-1.5 py-0.5 rounded ml-1">Remote</span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 2: Product */}
+            <div>
+              <h4 className="font-bold text-white uppercase text-[11px] tracking-wider mb-4">Product</h4>
+              <ul className="space-y-2.5">
+                <li><a href="#features" className="hover:text-emerald-400 transition-colors">1-Click Auto Clipper</a></li>
+                <li><a href="#interactive-suite" className="hover:text-emerald-400 transition-colors">Video Studio &amp; Timeline</a></li>
+                <li><a href="#comparison" className="hover:text-emerald-400 transition-colors">Core Capabilities</a></li>
+                <li><a href="#pricing" className="hover:text-emerald-400 transition-colors">Creator Pro &amp; Max Plans</a></li>
+              </ul>
+            </div>
+
+            {/* Column 3: Resources */}
+            <div>
+              <h4 className="font-bold text-white uppercase text-[11px] tracking-wider mb-4">Resources</h4>
+              <ul className="space-y-2.5">
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('faq')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    Help Center &amp; FAQ
+                  </button>
+                </li>
+                <li><a href="#demo" className="hover:text-emerald-400 transition-colors">Interactive Demo</a></li>
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('support')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    Setup Assistance
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('refunds')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    14-Day Money-Back Guarantee
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 4: Trust & Legal */}
+            <div>
+              <h4 className="font-bold text-white uppercase text-[11px] tracking-wider mb-4">Trust &amp; Legal</h4>
+              <ul className="space-y-2.5">
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('terms')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    Terms of Use
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('privacy')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    Privacy Policy (Zero Ingestion)
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('eula')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    Workstation EULA v2.5
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    type="button"
+                    onClick={() => setLegalModal('refunds')} 
+                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
+                  >
+                    Refund Policy
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-zinc-400 text-xs">
-            <button
-              type="button"
-              onClick={() => setLegalModal('eula')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              EULA v2.4
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalModal('terms')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Terms of Use
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalModal('privacy')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Privacy Policy
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalModal('refunds')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Refund Policy
-            </button>
-            <button
-              type="button"
-              onClick={() => setLegalModal('support')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Support Desk
-            </button>
-          </div>
-
-          <div className="text-center md:text-right text-[11px]">
-            <div>© 2026 ClipVault AI Studio. All rights reserved.</div>
-            <div className="text-zinc-600 mt-0.5">All trademarks belong to their respective owners.</div>
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="ClipVault" className="w-5 h-5 rounded shadow" />
+              <span className="text-white font-bold text-xs">ClipVault</span>
+              <span>© 2026 ClipVault AI Studio. All rights reserved.</span>
+            </div>
+            <div className="flex items-center gap-4 text-zinc-500">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-400/10 text-emerald-400 border border-emerald-400/20 text-[10px] font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> 100% On-Device Privacy Verified
+              </span>
+              <span>English</span>
+            </div>
           </div>
         </div>
       </footer>
@@ -2204,10 +2370,13 @@ export default function App() {
           >
             {/* Modal Header & Tabs */}
             <div className="p-5 border-b border-white/10 flex items-center justify-between bg-zinc-950/70">
-              <div className="flex items-center gap-2 overflow-x-auto text-xs font-medium">
+              <div className="flex items-center gap-1.5 overflow-x-auto text-xs font-medium scrollbar-thin">
                 {[
-                  { id: 'terms', label: 'Terms of Use' },
-                  { id: 'privacy', label: 'Privacy Policy' },
+                  { id: 'about', label: 'About Us' },
+                  { id: 'faq', label: 'FAQ / Help' },
+                  { id: 'affiliate', label: 'Affiliates' },
+                  { id: 'terms', label: 'Terms' },
+                  { id: 'privacy', label: 'Privacy' },
                   { id: 'refunds', label: '14-Day Refund' },
                   { id: 'eula', label: 'EULA' },
                   { id: 'support', label: 'Support Desk' },
@@ -2216,7 +2385,7 @@ export default function App() {
                     key={tab.id}
                     type="button"
                     onClick={() => setLegalModal(tab.id as any)}
-                    className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
+                    className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer text-xs ${
                       legalModal === tab.id
                         ? 'bg-emerald-400/15 text-emerald-400 border border-emerald-400/30 font-bold'
                         : 'text-zinc-400 hover:text-white bg-white/5'
@@ -2237,6 +2406,81 @@ export default function App() {
 
             {/* Modal Body Content */}
             <div className="p-6 overflow-y-auto space-y-5 text-sm leading-relaxed text-zinc-300">
+              {legalModal === 'about' && (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-white">About ClipVault</h3>
+                  <p className="text-xs text-zinc-400">Workstation Autonomy for Modern Video Creators</p>
+                  <p className="text-xs text-zinc-300">
+                    ClipVault was founded with a singular focus: to liberate video creators, editors, and digital agencies from artificial monthly minute caps, long server waiting queues, and privacy risks.
+                  </p>
+                  <div>
+                    <h4 className="font-semibold text-white">Our Local-First Philosophy</h4>
+                    <p className="text-xs text-zinc-400 mt-1">
+                      Modern computers and GPUs are remarkably powerful. Video clipping and rendering should occur directly on your workstation hardware—fast, unlimited, and 100% private.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white">Full Commercial Sovereignty</h4>
+                    <p className="text-xs text-zinc-400 mt-1">
+                      Every video you export belongs 100% to you. We take 0% royalties or revenue share across your YouTube Shorts, TikTok, and Instagram Reels earnings.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {legalModal === 'faq' && (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-white">Frequently Asked Questions</h3>
+                  <p className="text-xs text-zinc-400">Quick answers to common questions about ClipVault</p>
+                  
+                  <div className="space-y-3">
+                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                      <h4 className="font-semibold text-white text-xs">Do I need a high-end graphics card to use ClipVault?</h4>
+                      <p className="text-xs text-zinc-400 mt-1">No. ClipVault runs smoothly on standard multi-core CPUs as well as NVIDIA GPUs. When an NVIDIA RTX GPU is detected, rendering is automatically accelerated up to 10x faster.</p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                      <h4 className="font-semibold text-white text-xs">How do video processing limits work?</h4>
+                      <p className="text-xs text-zinc-400 mt-1">Unlike cloud tools that meter your minutes and cut you off after 60–120 minutes, ClipVault runs locally on your workstation and has unlimited processing minutes.</p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                      <h4 className="font-semibold text-white text-xs">Is my video footage private and secure?</h4>
+                      <p className="text-xs text-zinc-400 mt-1">Yes, 100%. Your raw footage, custom subtitles, and exported clips never leave your personal computer or get stored on third-party servers.</p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                      <h4 className="font-semibold text-white text-xs">How does the 14-day refund policy work?</h4>
+                      <p className="text-xs text-zinc-400 mt-1">If ClipVault does not fit your editing workflow or run properly on your workstation, simply email us within 14 days for a prompt, 100% full refund with zero hassle.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {legalModal === 'affiliate' && (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-white">ClipVault Affiliate &amp; Partner Program</h3>
+                  <p className="text-xs text-zinc-400">Earn 30% Recurring Commission for Every Creator You Refer</p>
+                  <p className="text-xs text-zinc-300">
+                    Are you a YouTuber, TikToker, or video production educator? Join the official ClipVault Partner Program and earn continuous monthly revenue by introducing your community to unlimited desktop clipping.
+                  </p>
+                  <div className="p-4 rounded-xl bg-emerald-400/10 border border-emerald-400/20 space-y-2">
+                    <div className="text-xs font-bold text-emerald-400">Partner Program Highlights:</div>
+                    <ul className="list-disc pl-5 space-y-1 text-xs text-zinc-300">
+                      <li><strong className="text-white">30% Recurring Commission</strong> for the lifetime of every active subscriber you refer.</li>
+                      <li><strong className="text-white">60-Day Cookie Window</strong> ensures you receive credit even if customers purchase later.</li>
+                      <li>Automated, transparent monthly payouts handled securely through Lemon Squeezy.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white">How to Apply:</h4>
+                    <p className="text-xs text-zinc-400 mt-1">
+                      Email us at <a href="mailto:studioclipvault@gmail.com" className="text-emerald-400 font-mono underline">studioclipvault@gmail.com</a> with subject &ldquo;Affiliate Partner Application&rdquo; including a link to your channel or portfolio. We approve qualified creators within 24 hours.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {legalModal === 'terms' && (
                 <div className="space-y-4">
                   <h3 className="text-xl font-bold text-white">Terms of Use</h3>
@@ -2250,11 +2494,11 @@ export default function App() {
                     <p className="text-xs text-zinc-400 mt-1">Videos generated through ClipVault may be commercially distributed across YouTube, TikTok, Instagram Reels, client deliverables, and broadcast channels with 0% royalties or revenue share owed to ClipVault.</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">3. Fair Use & Media Compliance</h4>
+                    <h4 className="font-semibold text-white">3. Fair Use &amp; Media Compliance</h4>
                     <p className="text-xs text-zinc-400 mt-1">Ingesting third-party footage must comply with Section 107 of the U.S. Copyright Act (Fair Use Doctrine) for commentary, critique, education, and transformative summarization.</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">4. Anti-Tamper & Security Rules</h4>
+                    <h4 className="font-semibold text-white">4. Anti-Tamper &amp; Security Rules</h4>
                     <p className="text-xs text-zinc-400 mt-1">Reverse engineering, decompiling, or attempting to forge cryptographic license keys is strictly prohibited and subject to immediate license termination.</p>
                   </div>
                 </div>
@@ -2300,7 +2544,7 @@ export default function App() {
               {legalModal === 'eula' && (
                 <div className="space-y-4">
                   <h3 className="text-xl font-bold text-white">End User License Agreement (EULA)</h3>
-                  <p className="text-xs text-zinc-400">Version 2.4 (Workstation Binding Edition)</p>
+                  <p className="text-xs text-zinc-400">Version 2.5 (Workstation Binding Edition)</p>
                   <p className="text-xs text-zinc-300">
                     This End User License Agreement is a legal agreement between you and ClipVault Studio LLC governing your use of ClipVault Desktop AI Video Studio.
                   </p>
