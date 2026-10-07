@@ -1710,9 +1710,6 @@ export default function App() {
             {/* Pillar 1 */}
             <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <Zap className="w-5 h-5 text-emerald-400" />
-                </div>
                 <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Instant Speed</div>
                 <h3 className="text-base font-bold text-white mb-2">Local GPU Acceleration</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
@@ -1728,9 +1725,6 @@ export default function App() {
             {/* Pillar 2 */}
             <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <HardDrive className="w-5 h-5 text-emerald-400" />
-                </div>
                 <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">True Autonomy</div>
                 <h3 className="text-base font-bold text-white mb-2">Unlimited Processing Minutes</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
@@ -1746,9 +1740,6 @@ export default function App() {
             {/* Pillar 3 */}
             <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <Film className="w-5 h-5 text-emerald-400" />
-                </div>
                 <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Broadcast Grade</div>
                 <h3 className="text-base font-bold text-white mb-2">4K UHD &amp; High-Bitrate Export</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
@@ -1764,9 +1755,6 @@ export default function App() {
             {/* Pillar 4 */}
             <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <Lock className="w-5 h-5 text-emerald-400" />
-                </div>
                 <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Zero Cloud Ingestion</div>
                 <h3 className="text-base font-bold text-white mb-2">100% On-Device Privacy</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
@@ -1782,9 +1770,6 @@ export default function App() {
             {/* Pillar 5 */}
             <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                </div>
                 <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Creator Protection</div>
                 <h3 className="text-base font-bold text-white mb-2">100% Commercial Ownership</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
@@ -1800,9 +1785,6 @@ export default function App() {
             {/* Pillar 6 */}
             <div className="p-6 rounded-2xl glass-card border border-white/10 hover:border-emerald-400/40 transition-all flex flex-col justify-between group">
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                  <Cpu className="w-5 h-5 text-emerald-400" />
-                </div>
                 <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Multi-Model AI</div>
                 <h3 className="text-base font-bold text-white mb-2">Flexible Intelligence Engine</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
