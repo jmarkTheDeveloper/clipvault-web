@@ -1,4 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { PageRoute } from './pages/PageShell';
+import { AboutPage } from './pages/AboutPage';
+import { FaqPage } from './pages/FaqPage';
+import { SupportPage } from './pages/SupportPage';
+import { SetupPage } from './pages/SetupPage';
+import { TermsPage } from './pages/TermsPage';
+import { PrivacyPage } from './pages/PrivacyPage';
+import { RefundsPage } from './pages/RefundsPage';
+import { EulaPage } from './pages/EulaPage';
 import { 
   ShieldCheck, 
   Sparkles, 
@@ -553,16 +562,42 @@ export default function App() {
   );
   const [isTypingChat, setIsTypingChat] = useState<boolean>(false);
 
-  // Legal & Support Modal State
-  const [legalModal, setLegalModal] = useState<'privacy' | 'terms' | 'refunds' | 'eula' | 'support' | 'about' | 'faq' | 'affiliate' | null>(null);
+  // Full Dedicated Page Routing State (Synced with URL hash for browser history & bookmarks)
+  const [currentPage, setCurrentPage] = useState<PageRoute>(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (['about', 'faq', 'support', 'setup', 'terms', 'privacy', 'refunds', 'eula'].includes(hash)) {
+        return hash as PageRoute;
+      }
+    }
+    return 'home';
+  });
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLegalModal(null);
+    const handleHash = () => {
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (['about', 'faq', 'support', 'setup', 'terms', 'privacy', 'refunds', 'eula'].includes(hash)) {
+        setCurrentPage(hash as PageRoute);
+        window.scrollTo(0, 0);
+      } else {
+        setCurrentPage('home');
+      }
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
   }, []);
+
+  const navigateTo = (route: PageRoute) => {
+    if (route === 'home') {
+      window.location.hash = '';
+      setCurrentPage('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.location.hash = route;
+      setCurrentPage(route);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   // Playhead animation cycle
   const [progress, setProgress] = useState<number>(35);
@@ -651,6 +686,16 @@ export default function App() {
   const LEMON_MAX_CHECKOUT_URL = 'https://clipvault.lemonsqueezy.com/checkout/buy/2dbb1ba7-c3e4-414b-99e9-a1a1a385ac49';
   const LEMON_STORE_URL = 'https://clipvault.lemonsqueezy.com';
   const [billingInterval, setBillingInterval] = useState<"monthly" | "yearly">("monthly");
+
+  // Route to dedicated full-page views for industry-standard subpage locations
+  if (currentPage === 'about') return <AboutPage onNavigate={navigateTo} />;
+  if (currentPage === 'faq') return <FaqPage onNavigate={navigateTo} />;
+  if (currentPage === 'support') return <SupportPage onNavigate={navigateTo} />;
+  if (currentPage === 'setup') return <SetupPage onNavigate={navigateTo} />;
+  if (currentPage === 'terms') return <TermsPage onNavigate={navigateTo} />;
+  if (currentPage === 'privacy') return <PrivacyPage onNavigate={navigateTo} />;
+  if (currentPage === 'refunds') return <RefundsPage onNavigate={navigateTo} />;
+  if (currentPage === 'eula') return <EulaPage onNavigate={navigateTo} />;
 
   return (
     <div className="min-h-screen bg-[#08090d] text-zinc-100 selection:bg-emerald-400 selection:text-black">
@@ -1692,7 +1737,8 @@ export default function App() {
       </section>
 
       {/* ── THE CLIPVAULT ADVANTAGE (CORE CAPABILITIES & VALUES) ── */}
-      <section id="comparison" className="py-20 px-4 sm:px-6">
+      <section id="advantage" className="py-20 px-4 sm:px-6 relative">
+        <div id="comparison" className="absolute -top-20" />
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-xs uppercase font-bold tracking-widest text-emerald-400 mb-2 block">
@@ -2090,16 +2136,16 @@ export default function App() {
               {/* Quick Action Links with Arrows */}
               <div className="space-y-3 pt-2">
                 {[
-                  { label: "Terms of Use", modal: 'terms' as const },
-                  { label: "Privacy Policy", modal: 'privacy' as const },
-                  { label: "14-Day Refund Policy", modal: 'refunds' as const },
-                  { label: "Master EULA License", modal: 'eula' as const },
-                  { label: "Need help? Reach our Support Team", modal: 'support' as const },
+                  { label: "Terms of Use", route: 'terms' as const },
+                  { label: "Privacy Policy", route: 'privacy' as const },
+                  { label: "14-Day Refund Policy", route: 'refunds' as const },
+                  { label: "Master EULA License", route: 'eula' as const },
+                  { label: "Need help? Reach our Support Team", route: 'support' as const },
                 ].map((item) => (
                   <button
-                    key={item.modal}
+                    key={item.route}
                     type="button"
-                    onClick={() => setLegalModal(item.modal)}
+                    onClick={() => navigateTo(item.route)}
                     className="group flex items-center gap-2.5 text-sm font-semibold text-zinc-300 hover:text-emerald-400 transition-colors text-left cursor-pointer"
                   >
                     <span>{item.label}</span>
@@ -2201,7 +2247,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('about')} 
+                    onClick={() => navigateTo('about')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     About ClipVault
@@ -2210,25 +2256,11 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('support')} 
+                    onClick={() => navigateTo('support')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Contact Support
                   </button>
-                </li>
-                <li>
-                  <button 
-                    type="button"
-                    onClick={() => setLegalModal('affiliate')} 
-                    className="hover:text-emerald-400 transition-colors cursor-pointer text-left text-emerald-400 font-semibold"
-                  >
-                    Become an Affiliate (30%)
-                  </button>
-                </li>
-                <li>
-                  <span className="text-zinc-600">
-                    Careers <span className="text-[10px] bg-white/10 text-zinc-400 px-1.5 py-0.5 rounded ml-1">Remote</span>
-                  </span>
                 </li>
               </ul>
             </div>
@@ -2238,8 +2270,8 @@ export default function App() {
               <h4 className="font-bold text-white uppercase text-[11px] tracking-wider mb-4">Product</h4>
               <ul className="space-y-2.5">
                 <li><a href="#features" className="hover:text-emerald-400 transition-colors">1-Click Auto Clipper</a></li>
-                <li><a href="#interactive-suite" className="hover:text-emerald-400 transition-colors">Video Studio &amp; Timeline</a></li>
-                <li><a href="#comparison" className="hover:text-emerald-400 transition-colors">Core Capabilities</a></li>
+                <li><a href="#interactive-suite" className="hover:text-emerald-400 transition-colors">Timeline Editor &amp; Trimmer</a></li>
+                <li><a href="#advantage" className="hover:text-emerald-400 transition-colors">Core Capabilities</a></li>
                 <li><a href="#pricing" className="hover:text-emerald-400 transition-colors">Creator Pro &amp; Max Plans</a></li>
               </ul>
             </div>
@@ -2251,7 +2283,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('faq')} 
+                    onClick={() => navigateTo('faq')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Help Center &amp; FAQ
@@ -2261,7 +2293,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('support')} 
+                    onClick={() => navigateTo('setup')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Setup Assistance
@@ -2270,7 +2302,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('refunds')} 
+                    onClick={() => navigateTo('refunds')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     14-Day Money-Back Guarantee
@@ -2286,7 +2318,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('terms')} 
+                    onClick={() => navigateTo('terms')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Terms of Use
@@ -2295,7 +2327,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('privacy')} 
+                    onClick={() => navigateTo('privacy')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Privacy Policy (Zero Ingestion)
@@ -2304,7 +2336,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('eula')} 
+                    onClick={() => navigateTo('eula')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Workstation EULA v2.5
@@ -2313,7 +2345,7 @@ export default function App() {
                 <li>
                   <button 
                     type="button"
-                    onClick={() => setLegalModal('refunds')} 
+                    onClick={() => navigateTo('refunds')} 
                     className="hover:text-emerald-400 transition-colors cursor-pointer text-left"
                   >
                     Refund Policy
@@ -2331,255 +2363,11 @@ export default function App() {
               <span>© 2026 ClipVault AI Studio. All rights reserved.</span>
             </div>
             <div className="flex items-center gap-4 text-zinc-500">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-400/10 text-emerald-400 border border-emerald-400/20 text-[10px] font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> 100% On-Device Privacy Verified
-              </span>
               <span>English</span>
             </div>
           </div>
         </div>
       </footer>
-
-      {/* ── COMPREHENSIVE LEGAL & SUPPORT MODAL ── */}
-      {legalModal && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
-          onClick={() => setLegalModal(null)}
-        >
-          <div 
-            className="relative w-full max-w-2xl max-h-[85vh] bg-[#0c0d12] border border-white/15 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-zinc-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header & Tabs */}
-            <div className="p-5 border-b border-white/10 flex items-center justify-between bg-zinc-950/70">
-              <div className="flex items-center gap-1.5 overflow-x-auto text-xs font-medium scrollbar-thin">
-                {[
-                  { id: 'about', label: 'About Us' },
-                  { id: 'faq', label: 'FAQ / Help' },
-                  { id: 'affiliate', label: 'Affiliates' },
-                  { id: 'terms', label: 'Terms' },
-                  { id: 'privacy', label: 'Privacy' },
-                  { id: 'refunds', label: '14-Day Refund' },
-                  { id: 'eula', label: 'EULA' },
-                  { id: 'support', label: 'Support Desk' },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setLegalModal(tab.id as any)}
-                    className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap cursor-pointer text-xs ${
-                      legalModal === tab.id
-                        ? 'bg-emerald-400/15 text-emerald-400 border border-emerald-400/30 font-bold'
-                        : 'text-zinc-400 hover:text-white bg-white/5'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={() => setLegalModal(null)}
-                className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center shrink-0 ml-3 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Modal Body Content */}
-            <div className="p-6 overflow-y-auto space-y-5 text-sm leading-relaxed text-zinc-300">
-              {legalModal === 'about' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">About ClipVault</h3>
-                  <p className="text-xs text-zinc-400">Workstation Autonomy for Modern Video Creators</p>
-                  <p className="text-xs text-zinc-300">
-                    ClipVault was founded with a singular focus: to liberate video creators, editors, and digital agencies from artificial monthly minute caps, long server waiting queues, and privacy risks.
-                  </p>
-                  <div>
-                    <h4 className="font-semibold text-white">Our Local-First Philosophy</h4>
-                    <p className="text-xs text-zinc-400 mt-1">
-                      Modern computers and GPUs are remarkably powerful. Video clipping and rendering should occur directly on your workstation hardware—fast, unlimited, and 100% private.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">Full Commercial Sovereignty</h4>
-                    <p className="text-xs text-zinc-400 mt-1">
-                      Every video you export belongs 100% to you. We take 0% royalties or revenue share across your YouTube Shorts, TikTok, and Instagram Reels earnings.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {legalModal === 'faq' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Frequently Asked Questions</h3>
-                  <p className="text-xs text-zinc-400">Quick answers to common questions about ClipVault</p>
-                  
-                  <div className="space-y-3">
-                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
-                      <h4 className="font-semibold text-white text-xs">Do I need a high-end graphics card to use ClipVault?</h4>
-                      <p className="text-xs text-zinc-400 mt-1">No. ClipVault runs smoothly on standard multi-core CPUs as well as NVIDIA GPUs. When an NVIDIA RTX GPU is detected, rendering is automatically accelerated up to 10x faster.</p>
-                    </div>
-
-                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
-                      <h4 className="font-semibold text-white text-xs">How do video processing limits work?</h4>
-                      <p className="text-xs text-zinc-400 mt-1">Unlike cloud tools that meter your minutes and cut you off after 60–120 minutes, ClipVault runs locally on your workstation and has unlimited processing minutes.</p>
-                    </div>
-
-                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
-                      <h4 className="font-semibold text-white text-xs">Is my video footage private and secure?</h4>
-                      <p className="text-xs text-zinc-400 mt-1">Yes, 100%. Your raw footage, custom subtitles, and exported clips never leave your personal computer or get stored on third-party servers.</p>
-                    </div>
-
-                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
-                      <h4 className="font-semibold text-white text-xs">How does the 14-day refund policy work?</h4>
-                      <p className="text-xs text-zinc-400 mt-1">If ClipVault does not fit your editing workflow or run properly on your workstation, simply email us within 14 days for a prompt, 100% full refund with zero hassle.</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {legalModal === 'affiliate' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">ClipVault Affiliate &amp; Partner Program</h3>
-                  <p className="text-xs text-zinc-400">Earn 30% Recurring Commission for Every Creator You Refer</p>
-                  <p className="text-xs text-zinc-300">
-                    Are you a YouTuber, TikToker, or video production educator? Join the official ClipVault Partner Program and earn continuous monthly revenue by introducing your community to unlimited desktop clipping.
-                  </p>
-                  <div className="p-4 rounded-xl bg-emerald-400/10 border border-emerald-400/20 space-y-2">
-                    <div className="text-xs font-bold text-emerald-400">Partner Program Highlights:</div>
-                    <ul className="list-disc pl-5 space-y-1 text-xs text-zinc-300">
-                      <li><strong className="text-white">30% Recurring Commission</strong> for the lifetime of every active subscriber you refer.</li>
-                      <li><strong className="text-white">60-Day Cookie Window</strong> ensures you receive credit even if customers purchase later.</li>
-                      <li>Automated, transparent monthly payouts handled securely through Lemon Squeezy.</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">How to Apply:</h4>
-                    <p className="text-xs text-zinc-400 mt-1">
-                      Email us at <a href="mailto:studioclipvault@gmail.com" className="text-emerald-400 font-mono underline">studioclipvault@gmail.com</a> with subject &ldquo;Affiliate Partner Application&rdquo; including a link to your channel or portfolio. We approve qualified creators within 24 hours.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {legalModal === 'terms' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Terms of Use</h3>
-                  <p className="text-xs text-zinc-400">Effective Date: October 2026</p>
-                  <div>
-                    <h4 className="font-semibold text-white">1. Software License Grant</h4>
-                    <p className="text-xs text-zinc-400 mt-1">ClipVault grants you a personal, commercial, non-exclusive license to use the desktop software on your licensed workstation. You retain 100% commercial ownership of all rendered videos and outputs.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">2. Commercial Distribution Rights</h4>
-                    <p className="text-xs text-zinc-400 mt-1">Videos generated through ClipVault may be commercially distributed across YouTube, TikTok, Instagram Reels, client deliverables, and broadcast channels with 0% royalties or revenue share owed to ClipVault.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">3. Fair Use &amp; Media Compliance</h4>
-                    <p className="text-xs text-zinc-400 mt-1">Ingesting third-party footage must comply with Section 107 of the U.S. Copyright Act (Fair Use Doctrine) for commentary, critique, education, and transformative summarization.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">4. Anti-Tamper &amp; Security Rules</h4>
-                    <p className="text-xs text-zinc-400 mt-1">Reverse engineering, decompiling, or attempting to forge cryptographic license keys is strictly prohibited and subject to immediate license termination.</p>
-                  </div>
-                </div>
-              )}
-
-              {legalModal === 'privacy' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Privacy Policy</h3>
-                  <p className="text-xs text-zinc-400">Zero Cloud Ingestion • 100% On-Device Sovereign Privacy</p>
-                  <div>
-                    <h4 className="font-semibold text-white">1. Zero Video Telemetry</h4>
-                    <p className="text-xs text-zinc-400 mt-1">Your video files, raw footage, rendered MP4 exports, and subtitles never leave your personal computer. ClipVault runs 100% locally on your CPU/GPU hardware.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">2. Direct BYOK Cloud AI</h4>
-                    <p className="text-xs text-zinc-400 mt-1">When you provide your own API key (Google Gemini, Groq, OpenAI), requests travel directly from your machine to the respective AI provider endpoint. No intermediary ClipVault proxy ever touches your data.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">3. License Verification</h4>
-                    <p className="text-xs text-zinc-400 mt-1">License activation verifies a cryptographic signature against our Merchant of Record (Lemon Squeezy) to confirm active tier status. No personally identifiable tracking beacons are embedded.</p>
-                  </div>
-                </div>
-              )}
-
-              {legalModal === 'refunds' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">14-Day Money-Back Guarantee</h3>
-                  <p className="text-xs text-zinc-400">Zero Hassle • 100% Guaranteed</p>
-                  <p className="text-xs text-zinc-300">
-                    We stand behind the performance of ClipVault. If the desktop software does not perform properly on your computer or does not match your editing workflow, you are entitled to a full refund within 14 days of purchase.
-                  </p>
-                  <div>
-                    <h4 className="font-semibold text-white">How to Claim a Refund:</h4>
-                    <ul className="list-disc pl-5 space-y-1.5 text-xs text-zinc-400 mt-2">
-                      <li>Send an email to <span className="text-emerald-400 font-mono">studioclipvault@gmail.com</span> with your checkout order number.</li>
-                      <li>Alternatively, log into <span className="text-emerald-400 font-mono">app.lemonsqueezy.com/my-orders</span> and click &ldquo;Request Refund&rdquo;.</li>
-                      <li>Refunds are processed automatically within 24–48 hours back to your original payment method.</li>
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {legalModal === 'eula' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">End User License Agreement (EULA)</h3>
-                  <p className="text-xs text-zinc-400">Version 2.5 (Workstation Binding Edition)</p>
-                  <p className="text-xs text-zinc-300">
-                    This End User License Agreement is a legal agreement between you and ClipVault Studio LLC governing your use of ClipVault Desktop AI Video Studio.
-                  </p>
-                  <div>
-                    <h4 className="font-semibold text-white">1. Workstation Machine Binding</h4>
-                    <p className="text-xs text-zinc-400 mt-1">Each purchased license is cryptographically bound to one active local workstation. Seat transfers (for hardware upgrades or replacements) are provided free of charge through the licensing portal.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">2. Prohibited Uses</h4>
-                    <p className="text-xs text-zinc-400 mt-1">You may not disassemble, reverse engineer, or distribute modified binary packages of ClipVault.</p>
-                  </div>
-                </div>
-              )}
-
-              {legalModal === 'support' && (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Direct Engineering Support</h3>
-                  <p className="text-xs text-zinc-400">We are here to assist with installation, GPU drivers, and licensing.</p>
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-2">
-                    <div className="text-xs text-zinc-400">Email us directly anytime at:</div>
-                    <a 
-                      href="https://mail.google.com/mail/?view=cm&fs=1&to=studioclipvault@gmail.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-base font-bold text-emerald-400 hover:underline block"
-                    >
-                      studioclipvault@gmail.com
-                    </a>
-                    <div className="text-[11px] text-zinc-500">Average response time: &lt; 12 hours (24/7 priority for Creator Max holders)</div>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white">Order &amp; License Key Retrieval</h4>
-                    <p className="text-xs text-zinc-400 mt-1">
-                      Lost your key? Visit <a href="https://app.lemonsqueezy.com/my-orders" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">app.lemonsqueezy.com/my-orders</a> to retrieve your active license keys and VAT receipts at any time.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-4 border-t border-white/10 bg-zinc-950 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setLegalModal(null)}
-                className="px-5 py-2 rounded-xl bg-emerald-400 text-black font-bold text-xs hover:bg-emerald-300 transition-colors cursor-pointer"
-              >
-                Close Window
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
