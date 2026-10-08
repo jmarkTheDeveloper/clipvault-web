@@ -548,6 +548,9 @@ export default function App() {
   const [isTestingHardware, setIsTestingHardware] = useState<boolean>(false);
 
   // Desktop Simulator States
+  const [simulatorMode, setSimulatorMode] = useState<'1click' | 'studio'>('1click');
+  const [autoSwitchModes, setAutoSwitchModes] = useState<boolean>(true);
+  const [modeTimer, setModeTimer] = useState<number>(0);
   const [selectedResolution, setSelectedResolution] = useState<'1080p' | '720p' | 'source' | '1440p' | '4k' | '8k'>('1080p');
   const [selectedAspect, setSelectedAspect] = useState<'9:16' | '16:9' | '1:1' | '4:5' | 'source'>('9:16');
   const [selectedLayout, setSelectedLayout] = useState<'auto' | 'dual'>('auto');
@@ -670,6 +673,23 @@ export default function App() {
     }, 850);
     return () => clearInterval(interval);
   }, [isPlayingPreview]);
+
+  // 2-second real-time auto-switch cycle between 1-Click Auto Clipper and Studio Editor
+  useEffect(() => {
+    if (!autoSwitchModes) return;
+    const stepMs = 50;
+    const interval = setInterval(() => {
+      setModeTimer((prev) => {
+        if (prev + stepMs >= 2000) {
+          setSimulatorMode((current) => (current === '1click' ? 'studio' : '1click'));
+          return 0;
+        }
+        return prev + stepMs;
+      });
+    }, stepMs);
+
+    return () => clearInterval(interval);
+  }, [autoSwitchModes]);
 
   const handleAskPrompt = (question: string, reply: string) => {
     const cleanQuestion = question.slice(0, 300).replace(/[<>'"`]/g, "");
@@ -891,12 +911,50 @@ export default function App() {
                 </div>
 
                 <div className="flex items-center gap-1.5 shrink-0 ml-1 sm:ml-3">
+                  {/* Mode 1: 1-Click Auto Clipper */}
                   <button
                     type="button"
-                    className="px-3 sm:px-3.5 py-1.5 rounded-lg bg-emerald-400 text-black font-extrabold text-xs flex items-center gap-1.5 shadow-[0_0_15px_rgba(0,255,102,0.35)]"
+                    onClick={() => {
+                      setSimulatorMode("1click");
+                      setModeTimer(0);
+                    }}
+                    className={`relative px-3 sm:px-3.5 py-1.5 rounded-lg font-extrabold text-xs flex items-center gap-1.5 transition-all cursor-pointer overflow-hidden ${
+                      simulatorMode === "1click"
+                        ? "bg-emerald-400 text-black shadow-[0_0_15px_rgba(0,255,102,0.4)]"
+                        : "bg-white/5 text-zinc-400 hover:text-white border border-white/10"
+                    }`}
                   >
-                    <Zap className="w-3 h-3 fill-black text-black" />
-                    <span>Clipper Studio</span>
+                    <Zap className={`w-3 h-3 ${simulatorMode === "1click" ? "fill-black text-black" : "text-emerald-400"}`} />
+                    <span>1-Click Auto Clipper</span>
+                    {simulatorMode === "1click" && autoSwitchModes && (
+                      <span 
+                        className="absolute bottom-0 left-0 h-[2.5px] bg-black/75 transition-all duration-75"
+                        style={{ width: `${(modeTimer / 2000) * 100}%` }}
+                      />
+                    )}
+                  </button>
+
+                  {/* Mode 2: Studio / Timeline Editor */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSimulatorMode("studio");
+                      setModeTimer(0);
+                    }}
+                    className={`relative px-3 sm:px-3.5 py-1.5 rounded-lg font-extrabold text-xs flex items-center gap-1.5 transition-all cursor-pointer overflow-hidden ${
+                      simulatorMode === "studio"
+                        ? "bg-emerald-400 text-black shadow-[0_0_15px_rgba(0,255,102,0.4)]"
+                        : "bg-white/5 text-zinc-400 hover:text-white border border-white/10"
+                    }`}
+                  >
+                    <Scissors className={`w-3 h-3 ${simulatorMode === "studio" ? "text-black" : "text-emerald-400"}`} />
+                    <span>Studio Editor</span>
+                    {simulatorMode === "studio" && autoSwitchModes && (
+                      <span 
+                        className="absolute bottom-0 left-0 h-[2.5px] bg-black/75 transition-all duration-75"
+                        style={{ width: `${(modeTimer / 2000) * 100}%` }}
+                      />
+                    )}
                   </button>
 
                   <button
@@ -909,8 +967,26 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right Header: Active Engine Badge + Window Controls */}
-              <div className="flex items-center gap-3 shrink-0">
+              {/* Right Header: Active Engine Badge + 2s Auto-Switch Indicator + Window Controls */}
+              <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                {/* 2s Real-Time Auto-Switch Cycle Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setAutoSwitchModes(!autoSwitchModes)}
+                  className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 border border-white/10 hover:border-emerald-400/40 text-[10.5px] font-mono text-zinc-300 transition-all cursor-pointer shadow-inner"
+                  title="Click to pause or resume real-time 2s mode switching"
+                >
+                  <span className={`w-2 h-2 rounded-full ${autoSwitchModes ? "bg-emerald-400 animate-ping" : "bg-zinc-600"}`} />
+                  <span className="text-zinc-200">
+                    {autoSwitchModes ? "Live Real-Time (2s)" : "Auto-Switch Paused"}
+                  </span>
+                  {autoSwitchModes ? (
+                    <Pause className="w-2.5 h-2.5 text-zinc-400 hover:text-white ml-0.5" />
+                  ) : (
+                    <Play className="w-2.5 h-2.5 text-emerald-400 ml-0.5" />
+                  )}
+                </button>
+
                 <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-emerald-400/30 text-[11px] font-mono shadow-inner">
                   <span className="text-zinc-400">Engine:</span>
                   <span className="text-emerald-300 font-bold">Google Gemini</span>
@@ -929,192 +1005,369 @@ export default function App() {
 
             {/* Desktop App Workspace Body */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 sm:p-7 bg-[#07080c] relative">
-              {/* Left Column: Clipper Settings Controls */}
-              <div className="lg:col-span-7 flex flex-col gap-6">
-                {/* 1. MEDIA SOURCE */}
-                <div className="space-y-2.5">
-                  <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
-                    MEDIA SOURCE
-                  </div>
+              {/* Left Column: Dynamic 2s Auto-Switching Workspace (1-Click Auto Clipper vs Studio Editor) */}
+              <div className="lg:col-span-7 flex flex-col gap-5 min-h-[560px]">
+                {simulatorMode === "1click" ? (
+                  /* ── 1-CLICK AUTO CLIPPER VIEW ── */
+                  <div key="1click" className="space-y-4 animate-in fade-in duration-300">
+                    {/* Mode Header Banner */}
+                    <div className="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-400/[0.08] border border-emerald-400/30 shadow-[0_0_20px_rgba(0,255,102,0.08)]">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-emerald-400 text-black flex items-center justify-center font-black shadow-md shrink-0">
+                          <Zap className="w-5 h-5 fill-black text-black" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">
+                              1-Click Autonomous AI Clipper
+                            </span>
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-400 text-black">
+                              1-CLICK
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-zinc-300 mt-0.5">
+                            Autonomous viral peak detection • Steadicam 9:16 • Zero manual timeline editing
+                          </p>
+                        </div>
+                      </div>
+                      <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-emerald-300 bg-black/70 px-2.5 py-1 rounded-xl border border-emerald-400/20 shrink-0">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span>NVENC ~18s</span>
+                      </div>
+                    </div>
 
-                  {/* Source Toggle Tabs */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setMediaSourceTab("youtube")}
-                      className={`flex-1 py-2 px-4 rounded-xl text-xs font-bold transition-all ${
-                        mediaSourceTab === "youtube"
-                          ? "bg-emerald-400 text-black shadow-md font-extrabold"
-                          : "bg-white/5 text-zinc-400 hover:text-white"
-                      }`}
-                    >
-                      YouTube Link
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setMediaSourceTab("local")}
-                      className={`flex-1 py-2 px-4 rounded-xl text-xs font-bold transition-all ${
-                        mediaSourceTab === "local"
-                          ? "bg-emerald-400 text-black shadow-md font-extrabold"
-                          : "bg-white/5 text-zinc-400 hover:text-white"
-                      }`}
-                    >
-                      Local Upload
-                    </button>
-                  </div>
-
-                  <p className="text-xs text-zinc-400">
-                    Paste a YouTube URL to automatically download and extract high-energy clips.
-                  </p>
-
-                  {/* Input Box */}
-                  <div className="flex items-center gap-2 bg-black/90 border border-white/10 focus-within:border-emerald-400/80 rounded-xl p-2.5 transition-all shadow-inner">
-                    <Link2 className="w-4 h-4 text-emerald-400 shrink-0 ml-1" />
-                    <input
-                      type="text"
-                      readOnly
-                      value={selectedPreset.url}
-                      className="bg-transparent text-xs text-zinc-200 font-mono flex-1 outline-none truncate"
-                    />
-                    <button
-                      type="button"
-                      className="px-3 py-1.5 rounded-lg bg-emerald-400/15 hover:bg-emerald-400/25 border border-emerald-400/40 text-emerald-300 text-xs font-bold flex items-center gap-1.5 transition-all shrink-0 cursor-pointer"
-                    >
-                      <Copy className="w-3 h-3" />
-                      <span>Paste</span>
-                    </button>
-                  </div>
-
-                  <p className="text-[11px] text-zinc-500 leading-relaxed">
-                    <span className="text-emerald-400 font-bold">Tip:</span> Paste links directly from your browser. YouTube video IDs are strictly case-sensitive (e.g.{" "}
-                    <code className="text-emerald-300 bg-emerald-400/10 px-1 py-0.5 rounded font-mono">F1</code> vs{" "}
-                    <code className="text-emerald-300 bg-emerald-400/10 px-1 py-0.5 rounded font-mono">T1</code>).
-                  </p>
-                </div>
-
-                {/* 2. EXPORT RESOLUTION PROFILE */}
-                <div className="space-y-2.5">
-                  <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
-                    EXPORT RESOLUTION PROFILE
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2.5">
-                    {[
-                      { id: "1080p", title: "1080p FHD", desc: "Native Shorts • Ultra Fast" },
-                      { id: "720p", title: "720p HD", desc: "Fast rendering • Light storage" },
-                      { id: "source", title: "Source Native", desc: "Match source resolution" },
-                      { id: "1440p", title: "1440p QHD", desc: "2K Quad HD • High detail" },
-                      { id: "4k", title: "4K Master", desc: "Ultra HD master export" },
-                      { id: "8k", title: "8K Cinema", desc: "Maximum bitrate" },
-                    ].map((res) => {
-                      const isSel = selectedResolution === res.id;
-                      return (
+                    {/* Media Source Input */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
+                          MEDIA INPUT (YOUTUBE URL / LOCAL VIDEO)
+                        </span>
+                        <span className="text-[10px] text-zinc-400 font-mono">100% Autonomous Scan</span>
+                      </div>
+                      <div className="flex items-center gap-2 bg-black/90 border border-emerald-400/40 rounded-xl p-2.5 shadow-[0_0_15px_rgba(0,255,102,0.12)]">
+                        <Link2 className="w-4 h-4 text-emerald-400 shrink-0 ml-1" />
+                        <input
+                          type="text"
+                          readOnly
+                          value={selectedPreset.url}
+                          className="bg-transparent text-xs text-zinc-200 font-mono flex-1 outline-none truncate"
+                        />
                         <button
-                          key={res.id}
                           type="button"
-                          onClick={() => setSelectedResolution(res.id as any)}
-                          className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                            isSel
-                              ? "border-emerald-400 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/40 shadow-sm"
+                          className="px-3 py-1.5 rounded-lg bg-emerald-400/15 hover:bg-emerald-400/25 border border-emerald-400/40 text-emerald-300 text-xs font-bold flex items-center gap-1.5 shrink-0"
+                        >
+                          <Copy className="w-3 h-3" />
+                          <span>Paste</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Big 1-Click Action Pulse Button */}
+                    <button
+                      type="button"
+                      className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-emerald-300 to-teal-400 text-black font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(0,255,102,0.35)] hover:scale-[1.01] transition-all cursor-pointer group"
+                    >
+                      <Zap className="w-4 h-4 fill-black text-black group-hover:scale-110 transition-transform" />
+                      <span>⚡ 1-Click Auto Generate Viral Shorts</span>
+                      <span className="px-2 py-0.5 rounded-full bg-black/80 text-emerald-300 text-[10px] font-mono font-bold ml-1">
+                        AI Scanning...
+                      </span>
+                    </button>
+
+                    {/* AI Virality Hook Discovery Analysis Card */}
+                    <div className="p-4 rounded-2xl bg-black/60 border border-emerald-400/25 space-y-3 shadow-inner">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Gauge className="w-4 h-4 text-emerald-400" />
+                          <span className="text-xs font-black text-white uppercase tracking-wider">
+                            Real-Time AI Virality Hook Discovery
+                          </span>
+                        </div>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30">
+                          Peak Viral Detected
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2.5">
+                        <div className="p-2.5 rounded-xl bg-white/[0.03] border border-emerald-400/30 text-center sm:text-left">
+                          <div className="text-xl sm:text-2xl font-black text-emerald-400 font-mono">98</div>
+                          <div className="text-[10px] font-bold text-white mt-0.5">Virality Score</div>
+                          <div className="text-[9px] text-zinc-400">Top 1% Hook</div>
+                        </div>
+                        <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-center sm:text-left">
+                          <div className="text-xl sm:text-2xl font-black text-cyan-400 font-mono">84%</div>
+                          <div className="text-[10px] font-bold text-white mt-0.5">Est. Retention</div>
+                          <div className="text-[9px] text-zinc-400">TikTok & Shorts</div>
+                        </div>
+                        <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-center sm:text-left">
+                          <div className="text-xl sm:text-2xl font-black text-amber-300 font-mono">00:03</div>
+                          <div className="text-[10px] font-bold text-white mt-0.5">Hook Start</div>
+                          <div className="text-[9px] text-zinc-400">Question Peak</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Batch Extracted Clips Queue */}
+                    <div className="space-y-2">
+                      <div className="text-[11px] font-black text-zinc-400 uppercase tracking-widest flex items-center justify-between">
+                        <span>AUTO-EXTRACTED VIRAL CLIPS (3 READY)</span>
+                        <span className="text-emerald-400 text-[10px] font-mono">Auto 9:16 Centered</span>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        {[
+                          { title: "Hook: Polarizing Contrarian Truth", range: "00:03 – 00:34 (31s)", score: 98, active: true },
+                          { title: "Climax: 10x Paradigm Shift Insight", range: "01:15 – 01:45 (30s)", score: 94, active: false },
+                          { title: "Actionable 3-Step Strategy Framework", range: "03:10 – 03:40 (30s)", score: 91, active: false },
+                        ].map((clip, i) => (
+                          <div
+                            key={i}
+                            className={`p-2.5 rounded-xl border flex items-center justify-between transition-all ${
+                              clip.active
+                                ? "bg-emerald-400/10 border-emerald-400/40 shadow-sm"
+                                : "bg-white/[0.02] border-white/5 opacity-70"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <div className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold font-mono ${
+                                clip.active ? "bg-emerald-400 text-black font-extrabold" : "bg-white/10 text-zinc-300"
+                              }`}>
+                                #{i + 1}
+                              </div>
+                              <div>
+                                <div className={`text-xs font-bold ${clip.active ? "text-emerald-300" : "text-white"}`}>
+                                  {clip.title}
+                                </div>
+                                <div className="text-[9.5px] text-zinc-400 font-mono">{clip.range}</div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 font-mono">
+                                ★ {clip.score}
+                              </span>
+                              <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-white/10 text-zinc-200">
+                                Export Ready
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* ── STUDIO / TIMELINE EDITOR VIEW ── */
+                  <div key="studio" className="space-y-5 animate-in fade-in duration-300">
+                    {/* Mode Header Banner */}
+                    <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] border border-white/10">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-emerald-400 text-black flex items-center justify-center font-black shadow-md shrink-0">
+                          <Scissors className="w-5 h-5 text-black" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">
+                              Pro Timeline Editor & Studio
+                            </span>
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-white/10 text-emerald-400 border border-emerald-400/30">
+                              MANUAL CONTROL
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-zinc-400 mt-0.5">
+                            Frame-accurate slicing • Multi-track waveforms • Custom aspect framing • 8K master exports
+                          </p>
+                        </div>
+                      </div>
+                      <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-zinc-400 bg-black/60 px-2.5 py-1 rounded-xl border border-white/10 shrink-0">
+                        <span>Multi-Track DAW</span>
+                      </div>
+                    </div>
+
+                    {/* 1. MEDIA SOURCE */}
+                    <div className="space-y-2.5">
+                      <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
+                        MEDIA SOURCE
+                      </div>
+
+                      {/* Source Toggle Tabs */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setMediaSourceTab("youtube")}
+                          className={`flex-1 py-2 px-4 rounded-xl text-xs font-bold transition-all ${
+                            mediaSourceTab === "youtube"
+                              ? "bg-emerald-400 text-black shadow-md font-extrabold"
+                              : "bg-white/5 text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          YouTube Link
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setMediaSourceTab("local")}
+                          className={`flex-1 py-2 px-4 rounded-xl text-xs font-bold transition-all ${
+                            mediaSourceTab === "local"
+                              ? "bg-emerald-400 text-black shadow-md font-extrabold"
+                              : "bg-white/5 text-zinc-400 hover:text-white"
+                          }`}
+                        >
+                          Local Upload
+                        </button>
+                      </div>
+
+                      <p className="text-xs text-zinc-400">
+                        Paste a YouTube URL to automatically download and extract high-energy clips.
+                      </p>
+
+                      {/* Input Box */}
+                      <div className="flex items-center gap-2 bg-black/90 border border-white/10 focus-within:border-emerald-400/80 rounded-xl p-2.5 transition-all shadow-inner">
+                        <Link2 className="w-4 h-4 text-emerald-400 shrink-0 ml-1" />
+                        <input
+                          type="text"
+                          readOnly
+                          value={selectedPreset.url}
+                          className="bg-transparent text-xs text-zinc-200 font-mono flex-1 outline-none truncate"
+                        />
+                        <button
+                          type="button"
+                          className="px-3 py-1.5 rounded-lg bg-emerald-400/15 hover:bg-emerald-400/25 border border-emerald-400/40 text-emerald-300 text-xs font-bold flex items-center gap-1.5 transition-all shrink-0 cursor-pointer"
+                        >
+                          <Copy className="w-3 h-3" />
+                          <span>Paste</span>
+                        </button>
+                      </div>
+
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">
+                        <span className="text-emerald-400 font-bold">Tip:</span> Paste links directly from your browser. YouTube video IDs are strictly case-sensitive (e.g.{" "}
+                        <code className="text-emerald-300 bg-emerald-400/10 px-1 py-0.5 rounded font-mono">F1</code> vs{" "}
+                        <code className="text-emerald-300 bg-emerald-400/10 px-1 py-0.5 rounded font-mono">T1</code>).
+                      </p>
+                    </div>
+
+                    {/* 2. EXPORT RESOLUTION PROFILE */}
+                    <div className="space-y-2.5">
+                      <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
+                        EXPORT RESOLUTION PROFILE
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2.5">
+                        {[
+                          { id: "1080p", title: "1080p FHD", desc: "Native Shorts • Ultra Fast" },
+                          { id: "720p", title: "720p HD", desc: "Fast rendering • Light storage" },
+                          { id: "source", title: "Source Native", desc: "Match source resolution" },
+                          { id: "1440p", title: "1440p QHD", desc: "2K Quad HD • High detail" },
+                          { id: "4k", title: "4K Master", desc: "Ultra HD master export" },
+                          { id: "8k", title: "8K Cinema", desc: "Maximum bitrate" },
+                        ].map((res) => {
+                          const isSel = selectedResolution === res.id;
+                          return (
+                            <button
+                              key={res.id}
+                              type="button"
+                              onClick={() => setSelectedResolution(res.id as any)}
+                              className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                                isSel
+                                  ? "border-emerald-400 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/40 shadow-sm"
+                                  : "border-white/5 bg-black/40 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
+                              }`}
+                            >
+                              <div className={`text-xs font-bold ${isSel ? "text-emerald-400" : "text-white"}`}>
+                                {res.title}
+                              </div>
+                              <div className="text-[10.5px] text-zinc-400 truncate mt-0.5">{res.desc}</div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* 3. ASPECT RATIO & FRAMING */}
+                    <div className="space-y-2.5">
+                      <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
+                        ASPECT RATIO & FRAMING
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                        {[
+                          { id: "9:16", title: "9:16 Vertical", desc: "Shorts, Reels, TikTok" },
+                          { id: "16:9", title: "16:9 Landscape", desc: "YouTube, Desktop, TV" },
+                          { id: "1:1", title: "1:1 Square", desc: "Instagram & Feed" },
+                          { id: "4:5", title: "4:5 Social", desc: "Social Portrait" },
+                          { id: "source", title: "Source Native", desc: "Original Aspect" },
+                        ].map((asp) => {
+                          const isSel = selectedAspect === asp.id;
+                          return (
+                            <button
+                              key={asp.id}
+                              type="button"
+                              onClick={() => setSelectedAspect(asp.id as any)}
+                              className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                                isSel
+                                  ? "border-emerald-400 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/40 shadow-sm"
+                                  : "border-white/5 bg-black/40 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
+                              }`}
+                            >
+                              <div className={`text-xs font-bold ${isSel ? "text-emerald-400" : "text-white"}`}>
+                                {asp.title}
+                              </div>
+                              <div className="text-[10px] text-zinc-400 truncate mt-0.5">{asp.desc}</div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* 4. VIDEO LAYOUT */}
+                    <div className="space-y-2.5">
+                      <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
+                        VIDEO LAYOUT
+                      </div>
+
+                      <div className="space-y-2">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedLayout("auto")}
+                          className={`w-full p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
+                            selectedLayout === "auto"
+                              ? "border-emerald-400/80 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/30 shadow-sm"
                               : "border-white/5 bg-black/40 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
                           }`}
                         >
-                          <div className={`text-xs font-bold ${isSel ? "text-emerald-400" : "text-white"}`}>
-                            {res.title}
+                          <div className="w-6 h-6 rounded-lg bg-black/60 border border-white/10 flex items-center justify-center text-xs font-bold text-emerald-400 shrink-0">
+                            1
                           </div>
-                          <div className="text-[10.5px] text-zinc-400 truncate mt-0.5">{res.desc}</div>
+                          <div className="flex-1">
+                            <div className="text-xs font-bold text-white">Auto Detect & Split (AI Auto)</div>
+                            <div className="text-[11px] text-zinc-400">
+                              Auto-detects 2-person dialogues or solo speaker
+                            </div>
+                          </div>
                         </button>
-                      );
-                    })}
-                  </div>
-                </div>
 
-                {/* 3. ASPECT RATIO & FRAMING */}
-                <div className="space-y-2.5">
-                  <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
-                    ASPECT RATIO & FRAMING
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    {[
-                      { id: "9:16", title: "9:16 Vertical", desc: "Shorts, Reels, TikTok" },
-                      { id: "16:9", title: "16:9 Landscape", desc: "YouTube, Desktop, TV" },
-                      { id: "1:1", title: "1:1 Square", desc: "Instagram & Feed" },
-                      { id: "4:5", title: "4:5 Social", desc: "Social Portrait" },
-                      { id: "source", title: "Source Native", desc: "Original Aspect" },
-                    ].map((asp) => {
-                      const isSel = selectedAspect === asp.id;
-                      return (
                         <button
-                          key={asp.id}
                           type="button"
-                          onClick={() => setSelectedAspect(asp.id as any)}
-                          className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                            isSel
-                              ? "border-emerald-400 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/40 shadow-sm"
+                          onClick={() => setSelectedLayout("dual")}
+                          className={`w-full p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
+                            selectedLayout === "dual"
+                              ? "border-emerald-400/80 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/30 shadow-sm"
                               : "border-white/5 bg-black/40 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
                           }`}
                         >
-                          <div className={`text-xs font-bold ${isSel ? "text-emerald-400" : "text-white"}`}>
-                            {asp.title}
+                          <div className="w-6 h-6 rounded-lg bg-black/60 border border-white/10 flex items-center justify-center text-xs font-bold text-zinc-400 shrink-0">
+                            2
                           </div>
-                          <div className="text-[10px] text-zinc-400 truncate mt-0.5">{asp.desc}</div>
+                          <div className="flex-1">
+                            <div className="text-xs font-bold text-white">
+                              Dual-Speaker Split (2 Persons Stacked)
+                            </div>
+                            <div className="text-[11px] text-zinc-400">
+                              Stacks host on top and guest on bottom with synchronized audio
+                            </div>
+                          </div>
                         </button>
-                      );
-                    })}
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                {/* 4. VIDEO LAYOUT */}
-                <div className="space-y-2.5">
-                  <div className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
-                    VIDEO LAYOUT
-                  </div>
-
-                  <div className="space-y-2">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedLayout("auto")}
-                      className={`w-full p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
-                        selectedLayout === "auto"
-                          ? "border-emerald-400/80 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/30 shadow-sm"
-                          : "border-white/5 bg-black/40 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
-                      }`}
-                    >
-                      <div className="w-6 h-6 rounded-lg bg-black/60 border border-white/10 flex items-center justify-center text-xs font-bold text-emerald-400 shrink-0">
-                        1
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-xs font-bold text-white">Auto Detect & Split (AI Auto)</div>
-                        <div className="text-[11px] text-zinc-400">
-                          Auto-detects 2-person dialogues or solo speaker
-                        </div>
-                      </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setSelectedLayout("dual")}
-                      className={`w-full p-3 rounded-xl border text-left transition-all flex items-center gap-3 cursor-pointer ${
-                        selectedLayout === "dual"
-                          ? "border-emerald-400/80 bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/30 shadow-sm"
-                          : "border-white/5 bg-black/40 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
-                      }`}
-                    >
-                      <div className="w-6 h-6 rounded-lg bg-black/60 border border-white/10 flex items-center justify-center text-xs font-bold text-zinc-400 shrink-0">
-                        2
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-xs font-bold text-white">
-                          Dual-Speaker Split (2 Persons Stacked)
-                        </div>
-                        <div className="text-[11px] text-zinc-400">
-                          Stacks host on top and guest on bottom with synchronized audio
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Right Column: Authentic Desktop Smartphone Simulator with Live Working Animation */}
@@ -1136,13 +1389,15 @@ export default function App() {
                     <div className="relative z-20 flex items-center justify-between text-[10px] font-mono font-bold pt-1">
                       <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/80 border border-emerald-400/30 text-emerald-400 shadow-md">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                        <span className="text-[9px] uppercase tracking-wider">9:16 AI DEMO</span>
+                        <span className="text-[9px] uppercase tracking-wider">
+                          {simulatorMode === "1click" ? "⚡ 1-CLICK AUTO CLIPPER" : "🎬 STUDIO EDITOR"}
+                        </span>
                       </div>
 
                       <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/80 border border-white/10 text-zinc-300 shadow-md">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         <span className="text-[9px] tracking-wide text-zinc-200">
-                          {selectedPreset.speaker}
+                          {simulatorMode === "1click" ? "Virality: 98/100" : selectedPreset.speaker}
                         </span>
                       </div>
                     </div>
@@ -1155,6 +1410,21 @@ export default function App() {
                           <div className="w-14 h-18 rounded-full bg-zinc-800/80 border border-white/10 mt-3 shadow-inner" />
                           <div className="w-32 h-20 rounded-t-[44px] bg-zinc-900/90 border-t border-white/10 -mt-2" />
                         </div>
+
+                        {/* Studio Mode Framing Safe Guides */}
+                        {simulatorMode === "studio" && (
+                          <div className="absolute inset-0 pointer-events-none border border-emerald-400/30 rounded-2xl grid grid-cols-3 grid-rows-3 m-2 opacity-50">
+                            <div className="border-r border-b border-emerald-400/20" />
+                            <div className="border-r border-b border-emerald-400/20" />
+                            <div className="border-b border-emerald-400/20" />
+                            <div className="border-r border-b border-emerald-400/20" />
+                            <div className="border-r border-b border-emerald-400/20" />
+                            <div className="border-b border-emerald-400/20" />
+                            <div className="border-r border-emerald-400/20" />
+                            <div className="border-r border-emerald-400/20" />
+                            <div />
+                          </div>
+                        )}
 
                         {/* Active Speaker Face Tracking Bounding Box (Animated) */}
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -1173,7 +1443,7 @@ export default function App() {
                             </div>
 
                             <div className="text-[7.5px] font-mono font-bold text-center text-black bg-emerald-400 rounded py-0.5 px-1 shadow-sm uppercase tracking-wider">
-                              ACTIVE SPEAKER LOCK
+                              {simulatorMode === "1click" ? "ACTIVE SPEAKER LOCK" : "9:16 CROP BOUNDS"}
                             </div>
                           </div>
                         </div>
@@ -1359,6 +1629,19 @@ export default function App() {
                             </button>
                           ))}
                         </div>
+                      </div>
+
+                      {/* Active Mode Footer Tag */}
+                      <div className="text-center text-[9px] font-mono py-1 px-2 rounded-lg bg-black/60 border border-white/10 mt-1">
+                        {simulatorMode === "1click" ? (
+                          <span className="text-emerald-400 font-bold">
+                            ⚡ 1-Click Auto Render: ~18s via NVIDIA NVENC • 0 Cloud Queues
+                          </span>
+                        ) : (
+                          <span className="text-zinc-300 font-bold">
+                            🎬 Pro Timeline Edit: Frame-Accurate Slicing & Waveforms
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
