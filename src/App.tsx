@@ -2215,7 +2215,7 @@ export default function App() {
                 <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider ${
                   billingInterval === "yearly" ? "bg-black/20 text-black" : "bg-emerald-400/20 text-emerald-400"
                 }`}>
-                  Save 20%
+                  Save 33%
                 </span>
               </button>
             </div>
@@ -2271,7 +2271,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* Creator Pro ($11 / mo) */}
+            {/* Creator Pro ($11 / mo or $89 / yr) */}
             <div className="glass-card-emerald p-6 sm:p-8 rounded-2xl border-2 border-emerald-400/80 flex flex-col justify-between relative shadow-[0_0_50px_rgba(0,255,102,0.25)]">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-400 text-black font-extrabold text-[10px] uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
                 Most Popular • Recommended
@@ -2282,13 +2282,13 @@ export default function App() {
                 <p className="text-xs text-zinc-400 mb-6">For YouTubers, TikTokers &amp; Solo Editors</p>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="font-display text-4xl font-extrabold text-emerald-400">
-                    ${billingInterval === "monthly" ? "11" : "9"}
+                    ${billingInterval === "monthly" ? "11" : "7"}
                   </span>
                   <span className="text-xs text-zinc-500 line-through font-medium">
-                    ${billingInterval === "monthly" ? "19" : "15"}
+                    ${billingInterval === "monthly" ? "19" : "11"}
                   </span>
                   <span className="text-xs text-zinc-400 font-medium">
-                    / month {billingInterval === "yearly" && "(billed $108/yr)"}
+                    / month {billingInterval === "yearly" && "(billed $89/yr)"}
                   </span>
                 </div>
 
@@ -2336,7 +2336,7 @@ export default function App() {
                   className="w-full py-3.5 rounded-xl bg-emerald-400 text-black font-extrabold text-xs flex items-center justify-center gap-2 hover:bg-emerald-300 transition-all glow-emerald hover:scale-105 active:scale-95 cursor-pointer"
                 >
                   <Key className="w-3.5 h-3.5" />
-                  <span>Subscribe to Creator Pro (${billingInterval === "monthly" ? "11" : "9"}/mo)</span>
+                  <span>Subscribe to Creator Pro (${billingInterval === "monthly" ? "11/mo" : "89/yr"})</span>
                 </a>
                 <div className="text-[10px] text-zinc-400 text-center mt-2">
                   14-Day Money-Back Guarantee • Cancel Anytime
@@ -2344,20 +2344,20 @@ export default function App() {
               </div>
             </div>
 
-            {/* Creator Max ($15 / mo) */}
+            {/* Creator Max ($15 / mo or $119 / yr) */}
             <div className="glass-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between">
               <div>
                 <h3 className="font-display text-lg font-bold text-white mb-1">Creator Max</h3>
                 <p className="text-xs text-zinc-400 mb-6">For power creators, editing teams &amp; agencies</p>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="font-display text-4xl font-extrabold text-white">
-                    ${billingInterval === "monthly" ? "15" : "12"}
+                    ${billingInterval === "monthly" ? "15" : "10"}
                   </span>
                   <span className="text-xs text-zinc-500 line-through font-medium">
-                    ${billingInterval === "monthly" ? "29" : "20"}
+                    ${billingInterval === "monthly" ? "29" : "15"}
                   </span>
                   <span className="text-xs text-zinc-400 font-medium">
-                    / month {billingInterval === "yearly" && "(billed $144/yr)"}
+                    / month {billingInterval === "yearly" && "(billed $119/yr)"}
                   </span>
                 </div>
 
@@ -2401,7 +2401,7 @@ export default function App() {
                   className="w-full py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/10 transition-colors cursor-pointer"
                 >
                   <Key className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Subscribe to Creator Max (${billingInterval === "monthly" ? "15" : "12"}/mo)</span>
+                  <span>Subscribe to Creator Max (${billingInterval === "monthly" ? "15/mo" : "119/yr"})</span>
                 </a>
                 <div className="text-[10px] text-zinc-400 text-center mt-2">
                   14-Day Money-Back Guarantee • Cancel Anytime
