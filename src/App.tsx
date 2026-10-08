@@ -2282,13 +2282,13 @@ export default function App() {
                 <p className="text-xs text-zinc-400 mb-6">For YouTubers, TikTokers &amp; Solo Editors</p>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="font-display text-4xl font-extrabold text-emerald-400">
-                    ${billingInterval === "monthly" ? "11" : "7"}
+                    ${billingInterval === "monthly" ? "11" : "89"}
                   </span>
                   <span className="text-xs text-zinc-500 line-through font-medium">
-                    ${billingInterval === "monthly" ? "19" : "11"}
+                    ${billingInterval === "monthly" ? "19" : "132"}
                   </span>
                   <span className="text-xs text-zinc-400 font-medium">
-                    / month {billingInterval === "yearly" && "(billed $89/yr)"}
+                    {billingInterval === "monthly" ? "/ month" : "/ year"}
                   </span>
                 </div>
 
@@ -2351,13 +2351,13 @@ export default function App() {
                 <p className="text-xs text-zinc-400 mb-6">For power creators, editing teams &amp; agencies</p>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="font-display text-4xl font-extrabold text-white">
-                    ${billingInterval === "monthly" ? "15" : "10"}
+                    ${billingInterval === "monthly" ? "15" : "119"}
                   </span>
                   <span className="text-xs text-zinc-500 line-through font-medium">
-                    ${billingInterval === "monthly" ? "29" : "15"}
+                    ${billingInterval === "monthly" ? "29" : "180"}
                   </span>
                   <span className="text-xs text-zinc-400 font-medium">
-                    / month {billingInterval === "yearly" && "(billed $119/yr)"}
+                    {billingInterval === "monthly" ? "/ month" : "/ year"}
                   </span>
                 </div>
 
